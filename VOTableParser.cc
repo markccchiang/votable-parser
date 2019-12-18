@@ -76,7 +76,7 @@ void VOTableParser::Parse() {
             FillElementAttributes(_element_name, name, value);
             break;
         case XML_READER_TYPE_TEXT:
-            Print(name, value);
+            Print("    " + name, value);
             FillElementValues(_element_name, value);
             break;
 
@@ -113,9 +113,9 @@ void VOTableParser::Parse() {
 
 void VOTableParser::Print(std::string name, std::string value) {
     if (_verbose) {
-        if (name == "" || name == "#text") {
+        if (name == "" && value != "") {
             std::cout << value << std::endl;
-        } else if (value == "") {
+        } else if (name != "" && value == "") {
             std::cout << name << std::endl;
         } else {
             std::cout << name << " : " << value << std::endl;
@@ -179,6 +179,8 @@ VOTableParser::ElementName VOTableParser::GetElementName(std::string name) {
 
 void VOTableParser::IncreaseElementCounts(ElementName element_name) {
     switch (element_name) {
+        case COOSYS:
+            ++_coosys_counts;
         case FIELD:
             ++_field_counts;
             break;
@@ -193,6 +195,9 @@ void VOTableParser::IncreaseElementCounts(ElementName element_name) {
 
 void VOTableParser::FillElementAttributes(ElementName element_name, std::string name, std::string value) {
     switch (element_name) {
+        case COOSYS:
+            _carrier->FillCoosysAttributes(_coosys_counts, name, value);
+            break;
         case FIELD:
             _carrier->FillFieldAttributes(_field_counts, name, value);
             break;

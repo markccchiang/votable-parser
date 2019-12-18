@@ -59,6 +59,7 @@ private:
     xmlTextReaderPtr _reader;
     ElementName _element_name = NONE;     // Current element name
     ElementName _pre_element_name = NONE; // Previous element name
+    int _coosys_counts = 0;               // Element <COOSYS> counts (only can increase)
     int _field_counts = 0;                // Element <FIELD> counts (only can increase)
     int _tr_counts = 0;                   // Element <TR> counts (only can increase)
     int _td_counts = 0;                   // Element <TD> counts (can increase or decrease)

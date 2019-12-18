@@ -6,6 +6,20 @@ void VOTableCarrier::SetFileName(std::string filename) {
     _filename = filename;
 }
 
+void VOTableCarrier::FillCoosysAttributes(int count, std::string name, std::string value) {
+    if (name == "ID") {
+        _coosys[count].id = value;
+    } else if (name == "equinox") {
+        _coosys[count].equinox = value;
+    } else if (name == "epoch") {
+        _coosys[count].epoch = value;
+    } else if (name == "system") {
+        _coosys[count].system = value;
+    } else {
+        std::cerr << "Can not recognize the COOSYS attribute: " << name << " : " << value << std::endl;
+    }
+}
+
 void VOTableCarrier::FillFieldAttributes(int count, std::string name, std::string value) {
     if (name == "name") {
         _fields[count].name = value;
@@ -32,7 +46,7 @@ void VOTableCarrier::FillFieldAttributes(int count, std::string name, std::strin
     } else if (name == "type") {
         _fields[count].type = value;
     } else {
-        std::cerr << "Can not recognize the FIELD attribute!" << std::endl;
+        std::cerr << "Can not recognize the FIELD attribute: " << name << " : " << value << std::endl;
     }
 }
 
@@ -48,11 +62,19 @@ void VOTableCarrier::PrintData() {
     std::cout << "------------------------------------------------------------------\n";
     std::cout << "File Name: " << _filename << std::endl;
     std::cout << "------------------------------------------------------------------\n";
+    // Print coordinate systems
+    for (std::pair<int, Coosys> coosys : _coosys) {
+        std::cout << "Coosys(" << coosys.first << "): " << std::endl;
+        coosys.second.Print();
+        std::cout << "------------------------------------------------------------------\n";
+    }
+    // Print table fields (column definitions)
     for (std::pair<int, Field> field : _fields) {
         std::cout << "Field(" << field.first << "): " << std::endl;
         field.second.Print();
         std::cout << "------------------------------------------------------------------\n";
     }
+    // Print table rows
     for (std::pair<int, std::vector<std::string>> tr : _trs) {
         auto& values = tr.second;
         std::cout << "Tr(" << tr.first << "): row size = " << values.size() << std::endl;

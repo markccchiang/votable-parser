@@ -9,7 +9,21 @@
 namespace carta {
 
 class VOTableCarrier {
-    // For the element <FIELD> with its attributes
+    // For the element <COOSYS> and its attributes
+    struct Coosys {
+        std::string id;
+        std::string equinox;
+        std::string epoch;
+        std::string system;
+        void Print() {
+            std::cout << "    id      = " << id << std::endl;
+            std::cout << "    equinox = " << equinox << std::endl;
+            std::cout << "    epoch   = " << epoch << std::endl;
+            std::cout << "    system  = " << system << std::endl;
+        }
+    };
+
+    // For the element <FIELD> and its attributes
     struct Field {
         std::string name;
         std::string id;
@@ -51,6 +65,7 @@ public:
     ~VOTableCarrier(){};
 
     void SetFileName(std::string filename);
+    void FillCoosysAttributes(int count, std::string name, std::string value);
     void FillFieldAttributes(int count, std::string name, std::string value);
     void FillFieldDescriptions(int count, std::string value);
     void FillTrValues(int count, std::string value);
@@ -59,6 +74,7 @@ public:
 
 private:
     std::string _filename;
+    std::unordered_map<int, Coosys> _coosys;                // unordered map for the element <COOSYS>: <COOSYS count, COOSYS attributes>
     std::unordered_map<int, Field> _fields;                 // unordered map for the element <FIELD>: <FIELD count, FIELD attributes>
     std::unordered_map<int, std::vector<std::string>> _trs; // unordered map for the element <TR>: <TR count, row data>
 };
