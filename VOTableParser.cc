@@ -183,6 +183,7 @@ void VOTableParser::IncreaseElementCounts(ElementName element_name) {
     switch (element_name) {
         case COOSYS:
             ++_coosys_counts;
+            break;
         case FIELD:
             ++_field_counts;
             break;
@@ -191,6 +192,7 @@ void VOTableParser::IncreaseElementCounts(ElementName element_name) {
             break;
         case TD:
             ++_td_counts;
+            break;
         default:; // Do not count any elements
     }
 }
