@@ -46,7 +46,7 @@ public:
     ~VOTableParser();
 
 private:
-    void Skim();
+    void Scan();
     void Parse();
     void Print(std::string name, std::string value);
     ElementName GetElementName(std::string name);

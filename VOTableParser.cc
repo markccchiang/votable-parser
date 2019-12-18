@@ -7,8 +7,10 @@ VOTableParser::VOTableParser(std::string filename, VOTableCarrier* carrier, bool
     if (_reader == nullptr) {
         std::cerr << "Unable to open " << filename << std::endl;
     }
-    _carrier->SetFileName(filename);
-    Skim(); // Skim the VOTable
+    if (_carrier) {
+        _carrier->SetFileName(filename);
+    }
+    Scan(); // Scan the VOTable
 }
 
 VOTableParser::~VOTableParser() {
@@ -21,7 +23,7 @@ VOTableParser::~VOTableParser() {
     xmlMemoryDump();
 }
 
-void VOTableParser::Skim() {
+void VOTableParser::Scan() {
     int result;
     do {
         result = xmlTextReaderRead(_reader);
@@ -65,7 +67,7 @@ void VOTableParser::Parse() {
             break;
         case XML_READER_TYPE_END_ELEMENT:
             Print("</" + name + ">", value);
-            if (_td_counts) {
+            if (_td_counts && _carrier) {
                 // Fill the TR element values as "" if there is an empty column, i.e. <TD></TD>.
                 _carrier->FillTrValues(_tr_counts, "");
                 --_td_counts; // Decrease the TD counter in order to mark such TR element has been filled
@@ -194,6 +196,10 @@ void VOTableParser::IncreaseElementCounts(ElementName element_name) {
 }
 
 void VOTableParser::FillElementAttributes(ElementName element_name, std::string name, std::string value) {
+    if (!_carrier) {
+        std::cerr << "The VOTableCarrier pointer is null!" << std::endl;
+        return;
+    }
     switch (element_name) {
         case VOTABLE:
             _carrier->FillVOTableAttributes(name, value);
@@ -209,6 +215,10 @@ void VOTableParser::FillElementAttributes(ElementName element_name, std::string 
 }
 
 void VOTableParser::FillElementValues(ElementName element_name, std::string value) {
+    if (!_carrier) {
+        std::cerr << "The VOTableCarrier pointer is null!" << std::endl;
+        return;
+    }
     switch (element_name) {
         case DESCRIPTION:
             if (_pre_element_name == FIELD) {
