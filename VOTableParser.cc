@@ -195,6 +195,11 @@ void VOTableParser::IncreaseElementCounts(ElementName element_name) {
 
 void VOTableParser::FillElementAttributes(ElementName element_name, std::string name, std::string value) {
     switch (element_name) {
+        case VOTABLE:
+            if (name == "version") {
+                _carrier->SetVOTableVersion(value);
+            }
+            break;
         case COOSYS:
             _carrier->FillCoosysAttributes(_coosys_counts, name, value);
             break;

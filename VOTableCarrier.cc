@@ -3,7 +3,12 @@
 using namespace carta;
 
 void VOTableCarrier::SetFileName(std::string filename) {
-    _filename = filename;
+    std::size_t found = filename.find_last_of("/");
+    _filename = filename.substr(found + 1);
+}
+
+void VOTableCarrier::SetVOTableVersion(std::string version) {
+    _votable_version = version;
 }
 
 void VOTableCarrier::FillCoosysAttributes(int count, std::string name, std::string value) {
@@ -60,7 +65,8 @@ void VOTableCarrier::FillTrValues(int count, std::string value) {
 
 void VOTableCarrier::PrintData() {
     std::cout << "------------------------------------------------------------------\n";
-    std::cout << "File Name: " << _filename << std::endl;
+    std::cout << "File Name:       " << _filename << std::endl;
+    std::cout << "VOTable Version: " << _votable_version << std::endl;
     std::cout << "------------------------------------------------------------------\n";
     // Print coordinate systems
     for (std::pair<int, Coosys> coosys : _coosys) {
