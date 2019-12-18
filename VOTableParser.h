@@ -59,11 +59,12 @@ private:
     xmlTextReaderPtr _reader;
     ElementName _element_name = NONE;     // Current element name
     ElementName _pre_element_name = NONE; // Previous element name
-    int _coosys_counts = 0;               // Element <COOSYS> counts (only can increase)
-    int _field_counts = 0;                // Element <FIELD> counts (only can increase)
-    int _tr_counts = 0;                   // Element <TR> counts (only can increase)
-    int _td_counts = 0;                   // Element <TD> counts (can increase or decrease)
     VOTableCarrier* _carrier;             // Store the VOTable skimming results
+    int _coosys_counts = 0;               // Element <COOSYS> counts (1 ~)
+    int _field_counts = 0;                // Element <FIELD> counts (1 ~)
+    int _tr_counts = 0;                   // Element <TR> counts (1 ~)
+    int _td_counts = 0;                   // Element <TD> counts (1 ~ _field_counts)
+    bool _td_filled = false;
 };
 
 } // namespace carta

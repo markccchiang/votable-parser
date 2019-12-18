@@ -16,10 +16,10 @@ class VOTableCarrier {
         std::string epoch;
         std::string system;
         void Print() {
-            std::cout << "    id      = " << id << std::endl;
-            std::cout << "    equinox = " << equinox << std::endl;
-            std::cout << "    epoch   = " << epoch << std::endl;
-            std::cout << "    system  = " << system << std::endl;
+            std::cout << "    id          = " << id << std::endl;
+            std::cout << "    equinox     = " << equinox << std::endl;
+            std::cout << "    epoch       = " << epoch << std::endl;
+            std::cout << "    system      = " << system << std::endl;
         }
     };
 
@@ -55,11 +55,6 @@ class VOTableCarrier {
         }
     };
 
-    // For the element <PARAM> with its attributes
-    struct Param : Field {
-        std::string value;
-    };
-
 public:
     VOTableCarrier(){};
     ~VOTableCarrier(){};
@@ -76,9 +71,13 @@ public:
 private:
     std::string _filename;
     std::string _votable_version = "";                      // VOTable version, "" means this is not the VOTable XML file.
-    std::unordered_map<int, Coosys> _coosys;                // unordered map for the element <COOSYS>: <COOSYS count, COOSYS attributes>
-    std::unordered_map<int, Field> _fields;                 // unordered map for the element <FIELD>: <FIELD count, FIELD attributes>
-    std::unordered_map<int, std::vector<std::string>> _trs; // unordered map for the element <TR>: <TR count, row data>
+    std::unordered_map<int, Coosys> _coosys;                // Unordered map for the element <COOSYS>: <COOSYS count, COOSYS attributes>
+    std::unordered_map<int, Field> _fields;                 // Unordered map for the element <FIELD>: <FIELD count, FIELD attributes>
+    std::unordered_map<int, std::vector<std::string>> _trs; // Unordered map for the element <TR>: <TR count, row data>
+    std::unordered_map<int, std::vector<int>> _int_vectors;
+    std::unordered_map<int, std::vector<float>> _float_vectors;
+    std::unordered_map<int, std::vector<std::string>> _string_vectors;
+    std::unordered_map<int, std::vector<bool>> _bool_vectors;
 };
 
 } // namespace carta

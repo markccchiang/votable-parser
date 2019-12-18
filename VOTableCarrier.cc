@@ -67,8 +67,10 @@ void VOTableCarrier::FillTrValues(int count, std::string value) {
 
 void VOTableCarrier::PrintData() {
     std::cout << "------------------------------------------------------------------\n";
-    std::cout << "File Name:       " << _filename << std::endl;
-    std::cout << "VOTable Version: " << _votable_version << std::endl;
+    std::cout << "File Name       : " << _filename << std::endl;
+    std::cout << "VOTable Version : " << _votable_version << std::endl;
+    std::cout << "Field size      : " << _fields.size() << std::endl;
+    std::cout << "Table row size  : " << _trs.size() << std::endl;
     std::cout << "------------------------------------------------------------------\n";
     // Print coordinate systems
     for (std::pair<int, Coosys> coosys : _coosys) {
@@ -85,7 +87,7 @@ void VOTableCarrier::PrintData() {
     // Print table rows
     for (std::pair<int, std::vector<std::string>> tr : _trs) {
         auto& values = tr.second;
-        std::cout << "Tr(" << tr.first << "): row size = " << values.size() << std::endl;
+        std::cout << "Tr(" << tr.first << "): vector size = " << values.size() << std::endl;
         std::cout << "    | ";
         for (int i = 0; i < values.size(); ++i) {
             std::cout << values[i] << " | ";
