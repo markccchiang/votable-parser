@@ -7,8 +7,10 @@ void VOTableCarrier::SetFileName(std::string filename) {
     _filename = filename.substr(found + 1);
 }
 
-void VOTableCarrier::SetVOTableVersion(std::string version) {
-    _votable_version = version;
+void VOTableCarrier::FillVOTableAttributes(std::string name, std::string version) {
+    if (name == "version") {
+        _votable_version = version;
+    }
 }
 
 void VOTableCarrier::FillCoosysAttributes(int count, std::string name, std::string value) {

@@ -65,7 +65,7 @@ public:
     ~VOTableCarrier(){};
 
     void SetFileName(std::string filename);
-    void SetVOTableVersion(std::string version);
+    void FillVOTableAttributes(std::string name, std::string version);
     void FillCoosysAttributes(int count, std::string name, std::string value);
     void FillFieldAttributes(int count, std::string name, std::string value);
     void FillFieldDescriptions(int count, std::string value);
