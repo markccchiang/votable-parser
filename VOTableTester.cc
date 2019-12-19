@@ -24,7 +24,7 @@ int main(int argc, char* argv[]) {
         VOTableCarrier* carrier = new VOTableCarrier();
 
         auto t_start = std::chrono::high_resolution_clock::now();
-        VOTableParser parser(filename, carrier, true);
+        VOTableParser parser(filename, carrier);
         auto t_end = std::chrono::high_resolution_clock::now();
         auto dt = std::chrono::duration<double, std::milli>(t_end - t_start).count();
         std::cout << "Time spending for the parser: " << dt << "(ms)" << std::endl;
