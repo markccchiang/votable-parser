@@ -64,7 +64,6 @@ public:
     void FillCoosysAttributes(int count, std::string name, std::string value);
     void FillFieldAttributes(int count, std::string name, std::string value);
     void FillFieldDescriptions(int count, std::string value);
-    void FillTrValues(int count, std::string value);
     void FillTdValues(int column_index, std::string value);
     void CheckTableRows();
     void PrintTableElement(int row, int column);
@@ -72,11 +71,10 @@ public:
 
 private:
     std::string _filename;
-    std::string _votable_version = "";                      // VOTable version, "" means this is not the VOTable XML file.
-    std::unordered_map<int, Coosys> _coosys;                // Unordered map for the element <COOSYS>: <COOSYS count, COOSYS attributes>
-    std::unordered_map<int, Field> _fields;                 // Unordered map for the element <FIELD>: <FIELD count, FIELD attributes>
-    std::unordered_map<int, std::vector<std::string>> _trs; // Unordered map for the element <TR>: <TR count, row data>
-    size_t _num_of_rows;                                    // Number of table rows
+    std::string _votable_version = "";       // VOTable version, "" means this is not the VOTable XML file.
+    std::unordered_map<int, Coosys> _coosys; // Unordered map for the element <COOSYS>: <COOSYS count, COOSYS attributes>
+    std::unordered_map<int, Field> _fields;  // Unordered map for the element <FIELD>: <FIELD count, FIELD attributes>
+    size_t _num_of_rows;                     // Number of table rows
 
     // Unordered map for table columns: <Column Index, Column Vector>
     std::unordered_map<int, std::vector<bool>> _bool_vectors;          // For the column with datatype = "boolean"

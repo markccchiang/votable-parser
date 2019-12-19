@@ -63,10 +63,6 @@ void VOTableCarrier::FillFieldDescriptions(int count, std::string value) {
     _fields[count].description = value;
 }
 
-void VOTableCarrier::FillTrValues(int count, std::string value) {
-    _trs[count].push_back(value);
-}
-
 void VOTableCarrier::FillTdValues(int column_index, std::string value) {
     if (_fields[column_index].datatype == "boolean") {
         // Convert the string to lowercase
@@ -103,7 +99,7 @@ void VOTableCarrier::FillTdValues(int column_index, std::string value) {
 }
 
 void VOTableCarrier::CheckTableRows() {
-    if (!_fields.size()) {
+    if (_fields.empty()) {
         std::cerr << "There is no table column!" << std::endl;
         return;
     }
@@ -201,14 +197,4 @@ void VOTableCarrier::PrintData() {
         }
         std::cout << "\n------------------------------------------------------------------\n";
     }
-    // Print table rows
-    /*for (std::pair<int, std::vector<std::string>> tr : _trs) {
-        auto& values = tr.second;
-        std::cout << "Tr(" << tr.first << "): vector size = " << values.size() << std::endl;
-        std::cout << "    | ";
-        for (int i = 0; i < values.size(); ++i) {
-            std::cout << values[i] << " | ";
-        }
-        std::cout << "\n------------------------------------------------------------------\n";
-    }*/
 }

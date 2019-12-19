@@ -69,7 +69,6 @@ void VOTableParser::Parse() {
             Print("</" + name + ">", value);
             if (_element_name == TD && !_td_filled && _carrier) {
                 // Fill the TR element values as "" if there is an empty column, i.e. <TD></TD>.
-                _carrier->FillTrValues(_tr_counts, "");
                 _carrier->FillTdValues(_td_counts, "");
                 _td_filled = true; // Decrease the TD counter in order to mark such TR element has been filled
             }
@@ -257,7 +256,6 @@ void VOTableParser::FillElementValues(ElementName element_name, std::string valu
             break;
         case TD:
             if (!_td_filled) {
-                _carrier->FillTrValues(_tr_counts, value);
                 _carrier->FillTdValues(_td_counts, value);
                 _td_filled = true;
             }
