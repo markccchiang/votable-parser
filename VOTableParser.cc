@@ -214,7 +214,7 @@ void VOTableParser::IncreaseElementCounts(ElementName element_name) {
             break;
         case TD:
             if (_field_counts > 0) {
-                _td_counts = (_td_counts + 1) % _field_counts;
+                _td_counts = (((_td_counts + 1) % _field_counts) == 0) ? _field_counts : ((_td_counts + 1) % _field_counts);
             } else {
                 std::cerr << "There is no column header!" << std::endl;
             }

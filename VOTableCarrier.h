@@ -74,10 +74,17 @@ private:
     std::unordered_map<int, Coosys> _coosys;                // Unordered map for the element <COOSYS>: <COOSYS count, COOSYS attributes>
     std::unordered_map<int, Field> _fields;                 // Unordered map for the element <FIELD>: <FIELD count, FIELD attributes>
     std::unordered_map<int, std::vector<std::string>> _trs; // Unordered map for the element <TR>: <TR count, row data>
-    std::unordered_map<int, std::vector<int>> _int_vectors;
-    std::unordered_map<int, std::vector<float>> _float_vectors;
-    std::unordered_map<int, std::vector<std::string>> _string_vectors;
-    std::unordered_map<int, std::vector<bool>> _bool_vectors;
+
+    // Unordered map for table columns: <Column Number, Column Vector>
+    std::unordered_map<int, std::vector<bool>> _bool_vectors;          // For the column with datatype = "boolean"
+    std::unordered_map<int, std::vector<std::string>> _string_vectors; // For the column with datatype = "char"
+    std::unordered_map<int, std::vector<short>> _short_vectors;        // For the column with datdtype = "short"
+    std::unordered_map<int, std::vector<int>> _int_vectors;            // For the column with datdtype = "int"
+    std::unordered_map<int, std::vector<long>> _long_vectors;          // For the column with datdtype = "long"
+    std::unordered_map<int, std::vector<float>> _float_vectors;        // For the column with datdtype = "float"
+    std::unordered_map<int, std::vector<double>> _double_vectors;      // For the column with datdtype = "double"
+
+    // PS: do not consider the datatypes: "bit", "unsignedByte", "unicodeChar", "floatComplex" and "doubleComplex"
 };
 
 } // namespace carta
