@@ -1,5 +1,7 @@
 #include "VOTableCarrier.h"
 
+#include <iomanip>
+
 using namespace carta;
 
 void VOTableCarrier::SetFileName(std::string filename) {
@@ -65,12 +67,119 @@ void VOTableCarrier::FillTrValues(int count, std::string value) {
     _trs[count].push_back(value);
 }
 
+void VOTableCarrier::FillTdValues(int column_index, std::string value) {
+    if (_fields[column_index].datatype == "boolean") {
+        // Convert the string to lowercase
+        std::transform(value.begin(), value.end(), value.begin(), ::tolower);
+        _bool_vectors[column_index].push_back(value == "true");
+    } else if (_fields[column_index].datatype == "char") {
+        _string_vectors[column_index].push_back(value);
+    } else if ((_fields[column_index].datatype == "short") || (_fields[column_index].datatype == "int")) {
+        // PS: C++ has no function to convert the "string" to "short", so we just convert it to "int"
+        try {
+            _int_vectors[column_index].push_back(std::stoi(value));
+        } catch (...) {
+            _int_vectors[column_index].push_back(std::numeric_limits<int>::quiet_NaN());
+        }
+    } else if (_fields[column_index].datatype == "long") {
+        try {
+            _long_vectors[column_index].push_back(std::stol(value));
+        } catch (...) {
+            _long_vectors[column_index].push_back(std::numeric_limits<long>::quiet_NaN());
+        }
+    } else if (_fields[column_index].datatype == "float") {
+        try {
+            _float_vectors[column_index].push_back(std::stof(value));
+        } catch (...) {
+            _float_vectors[column_index].push_back(std::numeric_limits<float>::quiet_NaN());
+        }
+    } else if (_fields[column_index].datatype == "double") {
+        try {
+            _double_vectors[column_index].push_back(std::stod(value));
+        } catch (...) {
+            _double_vectors[column_index].push_back(std::numeric_limits<double>::quiet_NaN());
+        }
+    }
+}
+
+void VOTableCarrier::CheckTableRows() {
+    if (!_fields.size()) {
+        std::cerr << "There is no table column!" << std::endl;
+        return;
+    }
+    for (int i = 1; i <= _fields.size(); ++i) {
+        if (_bool_vectors.find(i) != _bool_vectors.end()) {
+            if (i == 1) {
+                _num_of_rows = _bool_vectors[i].size();
+            } else if (_num_of_rows != _bool_vectors[i].size()) {
+                std::cerr << "The columns sizes are not consistent!" << std::endl;
+            }
+        } else if (_string_vectors.find(i) != _string_vectors.end()) {
+            if (i == 1) {
+                _num_of_rows = _string_vectors[i].size();
+            } else if (_num_of_rows != _string_vectors[i].size()) {
+                std::cerr << "The columns sizes are not consistent!" << std::endl;
+            }
+        } else if (_int_vectors.find(i) != _int_vectors.end()) {
+            if (i == 1) {
+                _num_of_rows = _int_vectors[i].size();
+            } else if (_num_of_rows != _int_vectors[i].size()) {
+                std::cerr << "The columns sizes are not consistent!" << std::endl;
+            }
+        } else if (_long_vectors.find(i) != _long_vectors.end()) {
+            if (i == 1) {
+                _num_of_rows = _long_vectors[i].size();
+            } else if (_num_of_rows != _long_vectors[i].size()) {
+                std::cerr << "The columns sizes are not consistent!" << std::endl;
+            }
+        } else if (_float_vectors.find(i) != _float_vectors.end()) {
+            if (i == 1) {
+                _num_of_rows = _float_vectors[i].size();
+            } else if (_num_of_rows != _float_vectors[i].size()) {
+                std::cerr << "The columns sizes are not consistent!" << std::endl;
+            }
+        } else if (_double_vectors.find(i) != _double_vectors.end()) {
+            if (i == 1) {
+                _num_of_rows = _double_vectors[i].size();
+            } else if (_num_of_rows != _double_vectors[i].size()) {
+                std::cerr << "The columns sizes are not consistent!" << std::endl;
+            }
+        }
+    }
+}
+
+void VOTableCarrier::PrintTableElement(int row, int column) {
+    if (_bool_vectors.find(column) != _bool_vectors.end()) {
+        std::cout << _bool_vectors[column][row] << " | ";
+    } else if (_string_vectors.find(column) != _string_vectors.end()) {
+        std::cout << _string_vectors[column][row] << " | ";
+    } else if (_int_vectors.find(column) != _int_vectors.end()) {
+        std::cout << _int_vectors[column][row] << " | ";
+    } else if (_long_vectors.find(column) != _long_vectors.end()) {
+        std::cout << _long_vectors[column][row] << " | ";
+    } else if (_float_vectors.find(column) != _float_vectors.end()) {
+        std::cout << _float_vectors[column][row] << " | ";
+    } else if (_double_vectors.find(column) != _double_vectors.end()) {
+        std::cout << _double_vectors[column][row] << " | ";
+    } else {
+        std::cout << " | ";
+    }
+}
+
 void VOTableCarrier::PrintData() {
+    CheckTableRows();
     std::cout << "------------------------------------------------------------------\n";
-    std::cout << "File Name       : " << _filename << std::endl;
-    std::cout << "VOTable Version : " << _votable_version << std::endl;
-    std::cout << "Field size      : " << _fields.size() << std::endl;
-    std::cout << "Table row size  : " << _trs.size() << std::endl;
+    std::cout << "File Name           : " << _filename << std::endl;
+    std::cout << "VOTable Version     : " << _votable_version << std::endl;
+    std::cout << "Table column size   : " << _fields.size() << std::endl;
+    std::cout << "Table row size      : " << _num_of_rows << std::endl;
+    std::cout << "------------------------------------------------------------------\n";
+    std::cout << "# of bool columns   : " << _bool_vectors.size() << std::endl;
+    std::cout << "# of string columns : " << _string_vectors.size() << std::endl;
+    std::cout << "# of int columns    : " << _int_vectors.size() << std::endl;
+    std::cout << "# of long columns   : " << _long_vectors.size() << std::endl;
+    std::cout << "# of float columns  : " << _float_vectors.size() << std::endl;
+    std::cout << "# of double columns : " << _double_vectors.size() << std::endl;
     std::cout << "------------------------------------------------------------------\n";
     // Print coordinate systems
     for (std::pair<int, Coosys> coosys : _coosys) {
@@ -85,7 +194,15 @@ void VOTableCarrier::PrintData() {
         std::cout << "------------------------------------------------------------------\n";
     }
     // Print table rows
-    for (std::pair<int, std::vector<std::string>> tr : _trs) {
+    for (int i = 0; i < _num_of_rows; ++i) {
+        std::cout << "row " << i << ": | ";
+        for (int j = 1; j <= _fields.size(); ++j) {
+            PrintTableElement(i, j);
+        }
+        std::cout << "\n------------------------------------------------------------------\n";
+    }
+    // Print table rows
+    /*for (std::pair<int, std::vector<std::string>> tr : _trs) {
         auto& values = tr.second;
         std::cout << "Tr(" << tr.first << "): vector size = " << values.size() << std::endl;
         std::cout << "    | ";
@@ -93,5 +210,5 @@ void VOTableCarrier::PrintData() {
             std::cout << values[i] << " | ";
         }
         std::cout << "\n------------------------------------------------------------------\n";
-    }
+    }*/
 }
