@@ -49,7 +49,7 @@ private:
     void Scan();
     void Parse();
     void Print(std::string name, std::string value);
-    ElementName GetElementName(std::string name);
+    static ElementName GetElementName(std::string name);
     void IncreaseElementCounts(ElementName element_name);
     void FillElementAttributes(ElementName element_name, std::string name, std::string value);
     // void FillFieldAttributes(std::string name, std::string value);
