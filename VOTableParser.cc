@@ -2,7 +2,8 @@
 
 using namespace carta;
 
-VOTableParser::VOTableParser(std::string filename, VOTableCarrier* carrier, bool verbose) : _carrier(carrier), _verbose(verbose) {
+VOTableParser::VOTableParser(std::string filename, VOTableCarrier* carrier, bool only_read_to_header, bool verbose)
+    : _carrier(carrier), _only_read_to_header(only_read_to_header), _verbose(verbose) {
     _reader = xmlReaderForFile(filename.c_str(), NULL, 0);
     if (_reader == nullptr) {
         std::cerr << "Unable to open " << filename << std::endl;
@@ -27,7 +28,7 @@ void VOTableParser::Scan() {
     int result;
     do {
         result = xmlTextReaderRead(_reader);
-        if (result) {
+        if (result && _continue_read) {
             Parse(); // Parse the VOTable and store data in the VOTableCarrier
         } else {
             if (_verbose) {
@@ -59,6 +60,10 @@ void VOTableParser::Parse() {
             Print("<" + name + ">", value);
             _pre_element_name = _element_name;
             _element_name = GetElementName(name);
+            if (_only_read_to_header && _element_name == DATA) {
+                _continue_read = false;
+                break;
+            }
             IncreaseElementCounts(_element_name);
             // Loop through the attributes
             while (xmlTextReaderMoveToNextAttribute(_reader)) {

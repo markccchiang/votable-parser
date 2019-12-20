@@ -42,7 +42,7 @@ class VOTableParser {
     };
 
 public:
-    VOTableParser(std::string filename, VOTableCarrier* carrier, bool verbose = false);
+    VOTableParser(std::string filename, VOTableCarrier* carrier, bool only_read_to_header = false, bool verbose = false);
     ~VOTableParser();
 
 private:
@@ -64,6 +64,8 @@ private:
     int _tr_counts = 0;                   // Element <TR> counts (1 ~)
     int _td_counts = 0;                   // Element <TD> counts (1 ~ _field_counts)
     bool _td_filled = false;
+    bool _continue_read = true;
+    bool _only_read_to_header;
 };
 
 } // namespace carta
