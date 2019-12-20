@@ -65,7 +65,7 @@ public:
     void FillFieldAttributes(int count, std::string name, std::string value);
     void FillFieldDescriptions(int count, std::string value);
     void FillTdValues(int column_index, std::string value);
-    void CheckTableRows();
+    void UpdateNumOfTableRows();
     void PrintTableElement(int row, int column);
     void PrintData();
 

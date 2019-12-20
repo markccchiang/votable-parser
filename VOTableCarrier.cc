@@ -1,7 +1,5 @@
 #include "VOTableCarrier.h"
 
-#include <iomanip>
-
 using namespace carta;
 
 void VOTableCarrier::SetFileName(std::string filename) {
@@ -98,7 +96,7 @@ void VOTableCarrier::FillTdValues(int column_index, std::string value) {
     }
 }
 
-void VOTableCarrier::CheckTableRows() {
+void VOTableCarrier::UpdateNumOfTableRows() {
     if (_fields.empty()) {
         std::cerr << "There is no table column!" << std::endl;
         return;
@@ -163,7 +161,7 @@ void VOTableCarrier::PrintTableElement(int row, int column) {
 }
 
 void VOTableCarrier::PrintData() {
-    CheckTableRows();
+    UpdateNumOfTableRows();
     std::cout << "------------------------------------------------------------------\n";
     std::cout << "File Name           : " << _filename << std::endl;
     std::cout << "VOTable Version     : " << _votable_version << std::endl;

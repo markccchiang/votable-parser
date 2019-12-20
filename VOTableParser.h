@@ -52,7 +52,6 @@ private:
     static ElementName GetElementName(std::string name);
     void IncreaseElementCounts(ElementName element_name);
     void FillElementAttributes(ElementName element_name, std::string name, std::string value);
-    // void FillFieldAttributes(std::string name, std::string value);
     void FillElementValues(ElementName element_name, std::string value);
 
     bool _verbose;
