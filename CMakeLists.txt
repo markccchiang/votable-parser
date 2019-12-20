@@ -18,7 +18,11 @@ INCLUDE_DIRECTORIES(/usr/local/opt/libxml2/include/libxml2)
 
 set(LINK_LIBS ${LINK_LIBS} xml2)
 
-set(SOURCE_FILES ${SOURCE_FILES} VOTableTester.cc VOTableParser.cc VOTableCarrier.cc)
+set(SOURCE_FILES ${SOURCE_FILES}
+        VOTableTester.cc
+        VOTableParser.cc
+        VOTableCarrier.cc
+        Catalog.cc)
 
 add_executable(votable-tester ${SOURCE_FILES})
 target_link_libraries(votable-tester ${LINK_LIBS})
