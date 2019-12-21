@@ -45,7 +45,10 @@ public:
     VOTableParser(std::string filename, VOTableCarrier* carrier, bool only_read_to_header = false, bool verbose = false);
     ~VOTableParser();
 
+    static bool IsVOTable(std::string filename);
+
 private:
+    static void CleanupParser();
     void Scan();
     void Parse();
     void Print(std::string name, std::string value);

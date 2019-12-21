@@ -4,6 +4,10 @@ using namespace carta;
 
 VOTableParser::VOTableParser(std::string filename, VOTableCarrier* carrier, bool only_read_to_header, bool verbose)
     : _carrier(carrier), _only_read_to_header(only_read_to_header), _verbose(verbose) {
+    if (!IsVOTable(filename)) {
+        std::cerr << "File: " << filename << " is NOT a VOTable!" << std::endl;
+        _continue_read = false;
+    }
     _reader = xmlReaderForFile(filename.c_str(), NULL, 0);
     if (_reader == nullptr) {
         std::cerr << "Unable to open " << filename << std::endl;
@@ -16,7 +20,31 @@ VOTableParser::VOTableParser(std::string filename, VOTableCarrier* carrier, bool
 
 VOTableParser::~VOTableParser() {
     xmlFreeTextReader(_reader);
+    CleanupParser();
+}
 
+bool VOTableParser::IsVOTable(std::string filename) {
+    xmlTextReaderPtr reader;
+    xmlChar* name_xmlchar;
+    std::string name;
+    reader = xmlReaderForFile(filename.c_str(), NULL, 0);
+    if (xmlTextReaderRead(reader)) {
+        if (xmlTextReaderNodeType(reader) == XML_READER_TYPE_ELEMENT) {
+            name_xmlchar = xmlTextReaderName(reader);
+            name = (char*)name_xmlchar;
+            if (GetElementName(name) == VOTABLE) {
+                xmlFreeTextReader(reader);
+                CleanupParser();
+                return true;
+            }
+        }
+    }
+    xmlFreeTextReader(reader);
+    CleanupParser();
+    return false;
+}
+
+void VOTableParser::CleanupParser() {
     // Cleanup function for the XML library.
     xmlCleanupParser();
 

@@ -9,6 +9,7 @@ void TestScanAllVOTable1(std::string filename);
 void TestScanAllVOTable2(std::string filename);
 void TestScanVOTableHeaders1(std::string filename);
 void TestScanVOTableHeaders2(std::string filename);
+void TestIsVOTable(std::string filename);
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
@@ -29,6 +30,7 @@ int main(int argc, char* argv[]) {
     // TestScanAllVOTable2(filename);
     TestScanVOTableHeaders1(filename);
     // TestScanVOTableHeaders2(filename);
+    // TestIsVOTable(filename);
 
     return 0;
 }
@@ -81,4 +83,12 @@ void TestScanVOTableHeaders2(std::string filename) {
     std::cout << "Time spending for the parser: " << dt << "(ms)" << std::endl;
 
     carrier.PrintData();
+}
+
+void TestIsVOTable(std::string filename) {
+    if (VOTableParser::IsVOTable(filename)) {
+        std::cout << "File: " << filename << " is a VOTable." << std::endl;
+    } else {
+        std::cout << "File: " << filename << " is NOT a VOTable." << std::endl;
+    }
 }
