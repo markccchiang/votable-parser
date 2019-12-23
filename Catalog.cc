@@ -12,6 +12,7 @@ using namespace carta::catalog;
 
 void Controller::OnFileListRequest(FileListRequest file_list_request, FileListResponse& file_list_response) {
     bool success(false);
+    std::string message;
     std::string directory(file_list_request.directory);
 
     // Replace the $BASE with current working path
@@ -57,6 +58,8 @@ void Controller::OnFileListRequest(FileListRequest file_list_request, FileListRe
             }
         }
         closedir(current_path);
+    } else {
+        message = "Can not open the directory: " + directory;
     }
 
     // Get the directory parent
@@ -67,6 +70,7 @@ void Controller::OnFileListRequest(FileListRequest file_list_request, FileListRe
 
     // Fill the file list response
     file_list_response.success = success;
+    file_list_response.message = message;
     file_list_response.directory = directory;
     file_list_response.parent = parent_directory;
 }
