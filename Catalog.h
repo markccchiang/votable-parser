@@ -10,6 +10,7 @@ namespace carta {
 namespace catalog {
 
 // Enums
+
 enum FileType { VOTable = 0 };
 
 enum ComparisonOperator {
@@ -26,6 +27,7 @@ enum ComparisonOperator {
 enum DataType { BOOL = 0, STRING = 1, INT = 2, LONG = 3, FLOAT = 4, DOUBLE = 5 };
 
 // Structs for sub-message
+
 struct FileInfo {
     std::string filename;
     FileType file_type;
@@ -67,6 +69,20 @@ struct ImageBounds {
 };
 
 // Structs for request messages
+
+struct FileListRequest {
+    std::string directory;
+    void Print() {
+        std::cout << "FileListRequest:" << std::endl;
+        std::cout << "    directory = " << directory << std::endl;
+    }
+};
+
+struct FileInfoRequest {
+    std::string directory;
+    std::string filename;
+};
+
 struct OpenFile {
     std::string directory;
     std::string filename;
@@ -76,15 +92,6 @@ struct OpenFile {
 
 struct CloseFile {
     int file_id;
-};
-
-struct FileListRequest {
-    std::string directory;
-};
-
-struct FileInfoRequest {
-    std::string directory;
-    std::string filename;
 };
 
 struct FilterRequest {
@@ -97,15 +104,6 @@ struct FilterRequest {
 };
 
 // Structs for response messages
-struct OpenFileResponse {
-    bool success;
-    std::string message;
-    int file_id;
-    FileInfo file_info;
-    int data_size;
-    std::vector<Header> headers;
-    ColumnsData columns_data;
-};
 
 struct FileListResponse {
     bool success;
@@ -114,6 +112,22 @@ struct FileListResponse {
     std::string parent;
     std::vector<FileInfo> files;
     std::vector<std::string> subdirectories;
+    void Print() {
+        std::cout << "FileListResponse:" << std::endl;
+        std::cout << "    success = " << success << std::endl;
+        std::cout << "    message = " << message << std::endl;
+        std::cout << "    directory = " << directory << std::endl;
+        std::cout << "    parent = " << parent << std::endl;
+        for (int i = 0; i < files.size(); ++i) {
+            std::cout << "    file " << i << ": " << std::endl;
+            std::cout << "        filename: " << files[i].filename << std::endl;
+            std::cout << "        file_type: " << files[i].file_type << std::endl;
+            std::cout << "        description: " << files[i].description << std::endl;
+        }
+        for (int i = 0; i < subdirectories.size(); ++i) {
+            std::cout << "    subdirectories " << i << ": " << subdirectories[i] << std::endl;
+        }
+    }
 };
 
 struct FileInfoResponse {
@@ -124,12 +138,35 @@ struct FileInfoResponse {
     std::vector<Header> headers;
 };
 
+struct OpenFileResponse {
+    bool success;
+    std::string message;
+    int file_id;
+    FileInfo file_info;
+    int data_size;
+    std::vector<Header> headers;
+    ColumnsData columns_data;
+};
+
 struct FilterResponse {
     int file_id;
     int region_id;
     std::vector<Header> headers;
     ColumnsData columns_data;
     float progress;
+};
+
+// Catalog Controller
+
+class Controller {
+public:
+    Controller(){};
+    ~Controller(){};
+
+    static void OnFileListRequest(FileListRequest file_list_request, FileListResponse& file_list_response);
+
+private:
+    static std::string GetCurrentWorkingPath();
 };
 
 } // namespace catalog
