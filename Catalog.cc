@@ -79,8 +79,8 @@ void Controller::OnFileInfoRequest(FileInfoRequest file_info_request, FileInfoRe
     ParseBasePath(file_path_name);
 
     // Get the VOTable data
-    VOTableCarrier* carrier = new VOTableCarrier();
-    VOTableParser parser(file_path_name, carrier, true);
+    VOTableCarrier carrier = VOTableCarrier();
+    VOTableParser parser(file_path_name, &carrier, true);
 
     // Fill the file info response
     file_info_response.success = success;
@@ -88,10 +88,8 @@ void Controller::OnFileInfoRequest(FileInfoRequest file_info_request, FileInfoRe
     file_info_response.file_info.filename = filename;
     file_info_response.file_info.file_type = VOTable;
     file_info_response.file_info.description = GetFileSize(file_path_name);
-    carrier->GetTableHeaders(file_info_response);
-    carrier->GetTableRowNumber(file_info_response);
-
-    delete carrier;
+    carrier.GetTableHeaders(file_info_response);
+    carrier.GetTableRowNumber(file_info_response);
 }
 
 std::string Controller::GetCurrentWorkingPath() {
