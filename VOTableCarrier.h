@@ -63,7 +63,7 @@ public:
     VOTableCarrier(){};
     ~VOTableCarrier(){};
 
-    void SetFileName(std::string filename);
+    void SetFileName(std::string file_path_name);
     void FillVOTableAttributes(std::string name, std::string version);
     void FillCoosysAttributes(int count, std::string name, std::string value);
     void FillFieldAttributes(int count, std::string name, std::string value);
@@ -80,6 +80,7 @@ public:
 
 private:
     std::string _filename;
+    std::string _directory;
     std::string _votable_version = "";       // VOTable version, "" means this is not the VOTable XML file.
     std::unordered_map<int, Coosys> _coosys; // Unordered map for the element <COOSYS>: <COOSYS count, COOSYS attributes>
     std::unordered_map<int, Field> _fields;  // Unordered map for the element <FIELD>: <FIELD count, FIELD attributes>

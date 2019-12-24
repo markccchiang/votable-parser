@@ -2,9 +2,10 @@
 
 using namespace carta;
 
-void VOTableCarrier::SetFileName(std::string filename) {
-    std::size_t found = filename.find_last_of("/");
-    _filename = filename.substr(found + 1);
+void VOTableCarrier::SetFileName(std::string file_path_name) {
+    std::size_t found = file_path_name.find_last_of("/");
+    _filename = file_path_name.substr(found + 1);
+    _directory = file_path_name.substr(0, found);
 }
 
 void VOTableCarrier::FillVOTableAttributes(std::string name, std::string version) {
@@ -205,6 +206,7 @@ void VOTableCarrier::PrintData() {
     UpdateNumOfTableRows();
     std::cout << "------------------------------------------------------------------\n";
     std::cout << "File Name           : " << _filename << std::endl;
+    std::cout << "File Directory      : " << _directory << std::endl;
     std::cout << "VOTable Version     : " << _votable_version << std::endl;
     std::cout << "Table column size   : " << _fields.size() << std::endl;
     std::cout << "Table row size      : " << _num_of_rows << std::endl;
