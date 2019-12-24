@@ -32,6 +32,12 @@ struct FileInfo {
     std::string filename;
     FileType file_type;
     std::string description;
+    void Print() {
+        std::cout << "FileInfo:" << std::endl;
+        std::cout << "    filename = " << filename << std::endl;
+        std::cout << "    file_type = " << file_type << std::endl;
+        std::cout << "    description = " << description << std::endl;
+    }
 };
 
 struct Header {
@@ -41,6 +47,15 @@ struct Header {
     int data_type_index;
     std::string description;
     std::string unit;
+    void Print() {
+        std::cout << "Header:" << std::endl;
+        std::cout << "    column_name = " << column_name << std::endl;
+        std::cout << "    data_type = " << data_type << std::endl;
+        std::cout << "    column_index = " << column_index << std::endl;
+        std::cout << "    data_type_index = " << data_type_index << std::endl;
+        std::cout << "    description = " << description << std::endl;
+        std::cout << "    unit = " << unit << std::endl;
+    }
 };
 
 struct ColumnsData {
@@ -124,10 +139,8 @@ struct FileListResponse {
         std::cout << "    directory = " << directory << std::endl;
         std::cout << "    parent = " << parent << std::endl;
         for (int i = 0; i < files.size(); ++i) {
-            std::cout << "    file " << i << ": " << std::endl;
-            std::cout << "        filename: " << files[i].filename << std::endl;
-            std::cout << "        file_type: " << files[i].file_type << std::endl;
-            std::cout << "        description: " << files[i].description << std::endl;
+            std::cout << "files[" << i << "]:" << std::endl;
+            files[i].Print();
         }
         for (int i = 0; i < subdirectories.size(); ++i) {
             std::cout << "    subdirectories " << i << ": " << subdirectories[i] << std::endl;
@@ -150,13 +163,8 @@ struct FileInfoResponse {
         std::cout << "        file_type: " << file_info.file_type << std::endl;
         std::cout << "        description: " << file_info.description << std::endl;
         for (int i = 0; i < headers.size(); ++i) {
-            std::cout << "    Header " << i << ": " << std::endl;
-            std::cout << "        column_name = " << headers[i].column_name << std::endl;
-            std::cout << "        data_type = " << headers[i].data_type << std::endl;
-            std::cout << "        column_index = " << headers[i].column_index << std::endl;
-            std::cout << "        data_type_index = " << headers[i].data_type_index << std::endl;
-            std::cout << "        description = " << headers[i].description << std::endl;
-            std::cout << "        unit = " << headers[i].unit << std::endl;
+            std::cout << "Header[" << i << "]:" << std::endl;
+            headers[i].Print();
         }
     }
 };
