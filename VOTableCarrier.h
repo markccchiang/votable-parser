@@ -6,6 +6,10 @@
 #include <unordered_map>
 #include <vector>
 
+#include "Catalog.h"
+
+using namespace carta;
+
 namespace carta {
 
 class VOTableCarrier {
@@ -66,6 +70,11 @@ public:
     void FillFieldDescriptions(int count, std::string value);
     void FillTdValues(int column_index, std::string value);
     void UpdateNumOfTableRows();
+
+    void GetTableHeaders(catalog::FileInfoResponse& file_info_response);
+    void GetTableRowNumber(catalog::FileInfoResponse& file_info_response);
+    static catalog::DataType GetDataType(std::string data_type);
+
     void PrintTableElement(int row, int column);
     void PrintData();
 

@@ -24,7 +24,7 @@ enum ComparisonOperator {
     FromTo = 7
 };
 
-enum DataType { BOOL = 0, STRING = 1, INT = 2, LONG = 3, FLOAT = 4, DOUBLE = 5 };
+enum DataType { BOOL = 0, STRING = 1, INT = 2, LONG = 3, FLOAT = 4, DOUBLE = 5, NONE = 6 };
 
 // Structs for sub-message
 
@@ -81,6 +81,11 @@ struct FileListRequest {
 struct FileInfoRequest {
     std::string directory;
     std::string filename;
+    void Print() {
+        std::cout << "FileInfoRequest:" << std::endl;
+        std::cout << "    directory = " << directory << std::endl;
+        std::cout << "    filename = " << filename << std::endl;
+    }
 };
 
 struct OpenFile {
@@ -136,6 +141,24 @@ struct FileInfoResponse {
     FileInfo file_info;
     int data_size;
     std::vector<Header> headers;
+    void Print() {
+        std::cout << "FileInfoResponse:" << std::endl;
+        std::cout << "    success = " << success << std::endl;
+        std::cout << "    message = " << message << std::endl;
+        std::cout << "    FileInfo:" << std::endl;
+        std::cout << "        filename: " << file_info.filename << std::endl;
+        std::cout << "        file_type: " << file_info.file_type << std::endl;
+        std::cout << "        description: " << file_info.description << std::endl;
+        for (int i = 0; i < headers.size(); ++i) {
+            std::cout << "    Header " << i << ": " << std::endl;
+            std::cout << "        column_name = " << headers[i].column_name << std::endl;
+            std::cout << "        data_type = " << headers[i].data_type << std::endl;
+            std::cout << "        column_index = " << headers[i].column_index << std::endl;
+            std::cout << "        data_type_index = " << headers[i].data_type_index << std::endl;
+            std::cout << "        description = " << headers[i].description << std::endl;
+            std::cout << "        unit = " << headers[i].unit << std::endl;
+        }
+    }
 };
 
 struct OpenFileResponse {
@@ -164,9 +187,12 @@ public:
     ~Controller(){};
 
     static void OnFileListRequest(FileListRequest file_list_request, FileListResponse& file_list_response);
+    static void OnFileInfoRequest(FileInfoRequest file_info_request, FileInfoResponse& file_info_response);
 
 private:
     static std::string GetCurrentWorkingPath();
+    static std::string GetFileSize(std::string file_path_name);
+    static void ParseBasePath(std::string& file_path_name);
 };
 
 } // namespace catalog

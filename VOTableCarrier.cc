@@ -93,6 +93,8 @@ void VOTableCarrier::FillTdValues(int column_index, std::string value) {
         } catch (...) {
             _double_vectors[column_index].push_back(std::numeric_limits<double>::quiet_NaN());
         }
+    } else {
+        // Do not cache the table column if its data type is not in our list
     }
 }
 
@@ -140,6 +142,45 @@ void VOTableCarrier::UpdateNumOfTableRows() {
             }
         }
     }
+}
+
+void VOTableCarrier::GetTableHeaders(catalog::FileInfoResponse& file_info_response) {
+    for (std::pair<int, Field> field : _fields) {
+        Field& tmp_field = field.second;
+        catalog::Header tmp_header;
+        tmp_header.column_name = tmp_field.name;
+        tmp_header.data_type = GetDataType(tmp_field.datatype);
+        tmp_header.column_index = field.first; // The FIELD index in the VOTable
+        tmp_header.data_type_index = -1;       // -1 means there is no corresponding data vector in the catalog::ColumnsData
+        tmp_header.description = tmp_field.description;
+        tmp_header.unit = tmp_field.unit;
+        file_info_response.headers.push_back(tmp_header);
+    }
+}
+
+void VOTableCarrier::GetTableRowNumber(catalog::FileInfoResponse& file_info_response) {
+    UpdateNumOfTableRows();
+    file_info_response.data_size = _num_of_rows;
+}
+
+catalog::DataType VOTableCarrier::GetDataType(std::string data_type) {
+    catalog::DataType catalog_data_type;
+    if (data_type == "boolean") {
+        catalog_data_type = catalog::BOOL;
+    } else if (data_type == "char") {
+        catalog_data_type = catalog::STRING;
+    } else if (data_type == "short" || data_type == "int") {
+        catalog_data_type = catalog::INT;
+    } else if (data_type == "long") {
+        catalog_data_type = catalog::LONG;
+    } else if (data_type == "float") {
+        catalog_data_type = catalog::FLOAT;
+    } else if (data_type == "double") {
+        catalog_data_type = catalog::DOUBLE;
+    } else {
+        catalog_data_type = catalog::NONE;
+    }
+    return catalog_data_type;
 }
 
 void VOTableCarrier::PrintTableElement(int row, int column) {
