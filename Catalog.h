@@ -65,6 +65,50 @@ struct ColumnsData {
     std::vector<std::vector<long>> long_columns;
     std::vector<std::vector<float>> float_columns;
     std::vector<std::vector<double>> double_columns;
+    void Print() {
+        for (int i = 0; i < bool_columns.size(); ++i) {
+            std::cout << "bool_columns[" << i << "]:" << std::endl;
+            for (int j = 0; j < bool_columns[i].size(); ++j) {
+                std::cout << bool_columns[i][j] << " | ";
+            }
+            std::cout << std::endl;
+        }
+        for (int i = 0; i < string_columns.size(); ++i) {
+            std::cout << "string_columns[" << i << "]:" << std::endl;
+            for (int j = 0; j < string_columns[i].size(); ++j) {
+                std::cout << string_columns[i][j] << " | ";
+            }
+            std::cout << std::endl;
+        }
+        for (int i = 0; i < int_columns.size(); ++i) {
+            std::cout << "int_columns[" << i << "]:" << std::endl;
+            for (int j = 0; j < int_columns[i].size(); ++j) {
+                std::cout << int_columns[i][j] << " | ";
+            }
+            std::cout << std::endl;
+        }
+        for (int i = 0; i < long_columns.size(); ++i) {
+            std::cout << "long_columns[" << i << "]:" << std::endl;
+            for (int j = 0; j < long_columns[i].size(); ++j) {
+                std::cout << long_columns[i][j] << " | ";
+            }
+            std::cout << std::endl;
+        }
+        for (int i = 0; i < float_columns.size(); ++i) {
+            std::cout << "float_columns[" << i << "]:" << std::endl;
+            for (int j = 0; j < float_columns[i].size(); ++j) {
+                std::cout << float_columns[i][j] << " | ";
+            }
+            std::cout << std::endl;
+        }
+        for (int i = 0; i < double_columns.size(); ++i) {
+            std::cout << "double_columns[" << i << "]:" << std::endl;
+            for (int j = 0; j < double_columns[i].size(); ++j) {
+                std::cout << double_columns[i][j] << " | ";
+            }
+            std::cout << std::endl;
+        }
+    }
 };
 
 struct FilterConfig {
@@ -103,11 +147,18 @@ struct FileInfoRequest {
     }
 };
 
-struct OpenFile {
+struct OpenFileRequest {
     std::string directory;
     std::string filename;
     int file_id;
     int preview_data_size;
+    void Print() {
+        std::cout << "OpenFileRequest:" << std::endl;
+        std::cout << "    directory = " << directory << std::endl;
+        std::cout << "    filename = " << filename << std::endl;
+        std::cout << "    file_id = " << file_id << std::endl;
+        std::cout << "    preview_data_size = " << preview_data_size << std::endl;
+    }
 };
 
 struct CloseFile {
@@ -177,6 +228,19 @@ struct OpenFileResponse {
     int data_size;
     std::vector<Header> headers;
     ColumnsData columns_data;
+    void Print() {
+        std::cout << "OpenFileResponse:" << std::endl;
+        std::cout << "    success = " << success << std::endl;
+        std::cout << "    message = " << message << std::endl;
+        std::cout << "    file_id = " << file_id << std::endl;
+        file_info.Print();
+        std::cout << "    data_size = " << data_size << std::endl;
+        for (int i = 0; i < headers.size(); ++i) {
+            std::cout << "Header[" << i << "]:" << std::endl;
+            headers[i].Print();
+        }
+        columns_data.Print();
+    }
 };
 
 struct FilterResponse {
