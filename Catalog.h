@@ -164,7 +164,7 @@ struct OpenFileRequest {
     }
 };
 
-struct CloseFile {
+struct CloseFileRequest {
     int file_id;
 };
 
@@ -264,12 +264,14 @@ public:
     static void OnFileListRequest(FileListRequest file_list_request, FileListResponse& file_list_response);
     static void OnFileInfoRequest(FileInfoRequest file_info_request, FileInfoResponse& file_info_response);
     void OnOpenFileRequest(OpenFileRequest open_file_request, OpenFileResponse& open_file_response);
+    void OnCloseFileRequest(CloseFileRequest close_file_request);
 
 private:
     static std::string GetCurrentWorkingPath();
     static std::string GetFileSize(std::string file_path_name);
     static void ParseBasePath(std::string& file_path_name);
     static std::string Concatenate(std::string directory, std::string filename);
+    void CloseFile(int file_id);
 
     std::unordered_map<int, VOTableCarrier*> _carriers; // The unordered map for <File Id, VOTableCarrier Ptr>
 };

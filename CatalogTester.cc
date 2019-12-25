@@ -62,4 +62,8 @@ void TestOnOpenFileRequest(catalog::OpenFileRequest open_file_request) {
 
     open_file_request.Print();
     open_file_response.Print();
+
+    catalog::CloseFileRequest close_file_request;
+    close_file_request.file_id = 0;
+    controller.OnCloseFileRequest(close_file_request);
 }

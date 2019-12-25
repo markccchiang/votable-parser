@@ -145,10 +145,13 @@ void Controller::OnOpenFileRequest(OpenFileRequest open_file_request, OpenFileRe
     carrier->GetHeadersAndData(open_file_response, preview_data_size);
 
     // Move the VOTableCarrier with respect to its file_id to the cache
-    if (_carriers.count(file_id)) {
-        delete _carriers[file_id];
-    }
+    CloseFile(file_id);
     _carriers[file_id] = std::move(carrier);
+}
+
+void Controller::OnCloseFileRequest(CloseFileRequest close_file_request) {
+    int file_id(close_file_request.file_id);
+    CloseFile(file_id);
 }
 
 std::string Controller::GetCurrentWorkingPath() {
@@ -182,4 +185,12 @@ std::string Controller::Concatenate(std::string directory, std::string filename)
     ParseBasePath(file_path_name);
 
     return file_path_name;
+}
+
+void Controller::CloseFile(int file_id) {
+    if (_carriers.count(file_id)) {
+        delete _carriers[file_id];
+        _carriers[file_id] = nullptr;
+        _carriers.erase(file_id);
+    }
 }
