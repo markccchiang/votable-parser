@@ -7,6 +7,9 @@
 #include <vector>
 
 namespace carta {
+
+class VOTableCarrier;
+
 namespace catalog {
 
 // Enums
@@ -209,10 +212,8 @@ struct FileInfoResponse {
         std::cout << "FileInfoResponse:" << std::endl;
         std::cout << "    success = " << success << std::endl;
         std::cout << "    message = " << message << std::endl;
-        std::cout << "    FileInfo:" << std::endl;
-        std::cout << "        filename: " << file_info.filename << std::endl;
-        std::cout << "        file_type: " << file_info.file_type << std::endl;
-        std::cout << "        description: " << file_info.description << std::endl;
+        file_info.Print();
+        std::cout << "    data_size = " << data_size << std::endl;
         for (int i = 0; i < headers.size(); ++i) {
             std::cout << "Header[" << i << "]:" << std::endl;
             headers[i].Print();
@@ -254,17 +255,23 @@ struct FilterResponse {
 // Catalog Controller
 
 class Controller {
+    const int _default_preview_row_numbers = 50;
+
 public:
     Controller(){};
-    ~Controller(){};
+    ~Controller();
 
     static void OnFileListRequest(FileListRequest file_list_request, FileListResponse& file_list_response);
     static void OnFileInfoRequest(FileInfoRequest file_info_request, FileInfoResponse& file_info_response);
+    void OnOpenFileRequest(OpenFileRequest open_file_request, OpenFileResponse& open_file_response);
 
 private:
     static std::string GetCurrentWorkingPath();
     static std::string GetFileSize(std::string file_path_name);
     static void ParseBasePath(std::string& file_path_name);
+    static std::string Concatenate(std::string directory, std::string filename);
+
+    std::unordered_map<int, VOTableCarrier*> _carriers; // The unordered map for <File Id, VOTableCarrier Ptr>
 };
 
 } // namespace catalog

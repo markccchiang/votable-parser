@@ -4,14 +4,17 @@
 
 using namespace carta;
 
+void TestOnOpenFileRequest();
+void TestOnOpenFileRequest(catalog::OpenFileRequest open_file_request);
 void TestOnFileListRequest();
 void TestOnFileListRequest(catalog::FileListRequest file_list_request);
 void TestOnFileInfoRequest();
 void TestOnFileInfoRequest(catalog::FileInfoRequest file_info_request);
 
 int main(int argc, char* argv[]) {
-    TestOnFileListRequest();
-    TestOnFileInfoRequest();
+    // TestOnFileListRequest();
+    // TestOnFileInfoRequest();
+    TestOnOpenFileRequest();
 
     return 0;
 }
@@ -43,4 +46,20 @@ void TestOnFileInfoRequest(catalog::FileInfoRequest file_info_request) {
 
     file_info_request.Print();
     file_info_response.Print();
+}
+
+void TestOnOpenFileRequest() {
+    TestOnOpenFileRequest({"images", "simple.xml", 0, 0});
+    TestOnOpenFileRequest({"$BASE/images", "simple.xml", 0, 0});
+    TestOnOpenFileRequest({"images", "M17_SWex_simbad_2arcmin.xml", 0, 0});
+    TestOnOpenFileRequest({"$BASE/images", "M17_SWex_simbad_2arcmin.xml", 0, 0});
+}
+
+void TestOnOpenFileRequest(catalog::OpenFileRequest open_file_request) {
+    catalog::OpenFileResponse open_file_response;
+    catalog::Controller controller = catalog::Controller();
+    controller.OnOpenFileRequest(open_file_request, open_file_response);
+
+    open_file_request.Print();
+    open_file_response.Print();
 }

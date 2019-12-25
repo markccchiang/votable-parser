@@ -70,10 +70,11 @@ public:
     void FillFieldDescriptions(int count, std::string value);
     void FillTdValues(int column_index, std::string value);
     void UpdateNumOfTableRows();
-
-    void GetTableHeaders(catalog::FileInfoResponse& file_info_response);
-    void GetTableRowNumber(catalog::FileInfoResponse& file_info_response);
+    void GetHeaders(catalog::FileInfoResponse& file_info_response);
+    void GetHeadersAndData(catalog::OpenFileResponse& open_file_response, int preview_data_size);
+    size_t GetTableRowNumber();
     static catalog::DataType GetDataType(std::string data_type);
+    bool IsValid();
 
     void PrintTableElement(int row, int column);
     void PrintData();

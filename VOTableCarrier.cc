@@ -145,23 +145,85 @@ void VOTableCarrier::UpdateNumOfTableRows() {
     }
 }
 
-void VOTableCarrier::GetTableHeaders(catalog::FileInfoResponse& file_info_response) {
+void VOTableCarrier::GetHeaders(catalog::FileInfoResponse& file_info_response) {
     for (std::pair<int, Field> field : _fields) {
         Field& tmp_field = field.second;
-        catalog::Header tmp_header;
-        tmp_header.column_name = tmp_field.name;
-        tmp_header.data_type = GetDataType(tmp_field.datatype);
-        tmp_header.column_index = field.first; // The FIELD index in the VOTable
-        tmp_header.data_type_index = -1;       // -1 means there is no corresponding data vector in the catalog::ColumnsData
-        tmp_header.description = tmp_field.description;
-        tmp_header.unit = tmp_field.unit;
-        file_info_response.headers.push_back(tmp_header);
+        catalog::DataType tmp_data_type = GetDataType(tmp_field.datatype);
+        if (tmp_data_type != catalog::NONE) { // Only fill the header that its data type is in our list
+            catalog::Header tmp_header;
+            tmp_header.column_name = tmp_field.name;
+            tmp_header.data_type = tmp_data_type;
+            tmp_header.column_index = field.first; // The FIELD index in the VOTable
+            tmp_header.data_type_index = -1;       // -1 means there is no corresponding data vector in the catalog::ColumnsData
+            tmp_header.description = tmp_field.description;
+            tmp_header.unit = tmp_field.unit;
+            file_info_response.headers.emplace_back(tmp_header);
+        }
     }
 }
 
-void VOTableCarrier::GetTableRowNumber(catalog::FileInfoResponse& file_info_response) {
+void VOTableCarrier::GetHeadersAndData(catalog::OpenFileResponse& open_file_response, int preview_data_size) {
+    for (std::pair<int, Field> field : _fields) {
+        Field& tmp_field = field.second;
+        catalog::DataType tmp_data_type = GetDataType(tmp_field.datatype);
+        if (tmp_data_type != catalog::NONE) { // Only fill the header that its data type is in our list
+            catalog::Header tmp_header;
+            tmp_header.column_name = tmp_field.name;
+            tmp_header.data_type = tmp_data_type;
+            tmp_header.column_index = field.first; // The FIELD index in the VOTable
+            tmp_header.description = tmp_field.description;
+            tmp_header.unit = tmp_field.unit;
+
+            // Fill the column data with respect to its header
+            int column_index = field.first;
+            catalog::ColumnsData& tmp_columns_data = open_file_response.columns_data;
+            if (_bool_vectors.count(column_index)) {
+                std::vector<bool>& ref_column_data = _bool_vectors[column_index];
+                std::vector<bool> copied_column_data;
+                copied_column_data.assign(ref_column_data.begin(), ref_column_data.begin() + preview_data_size);
+                tmp_columns_data.bool_columns.emplace_back(copied_column_data);
+                tmp_header.data_type_index = tmp_columns_data.bool_columns.size() - 1;
+            } else if (_string_vectors.count(column_index)) {
+                std::vector<std::string>& ref_column_data = _string_vectors[column_index];
+                std::vector<std::string> copied_column_data;
+                copied_column_data.assign(ref_column_data.begin(), ref_column_data.begin() + preview_data_size);
+                tmp_columns_data.string_columns.emplace_back(copied_column_data);
+                tmp_header.data_type_index = tmp_columns_data.string_columns.size() - 1;
+            } else if (_int_vectors.count(column_index)) {
+                std::vector<int>& ref_column_data = _int_vectors[column_index];
+                std::vector<int> copied_column_data(preview_data_size);
+                memcpy(copied_column_data.data(), ref_column_data.data(), preview_data_size * sizeof(int));
+                tmp_columns_data.int_columns.emplace_back(copied_column_data);
+                tmp_header.data_type_index = tmp_columns_data.int_columns.size() - 1;
+            } else if (_long_vectors.count(column_index)) {
+                std::vector<long>& ref_column_data = _long_vectors[column_index];
+                std::vector<long> copied_column_data(preview_data_size);
+                memcpy(copied_column_data.data(), ref_column_data.data(), preview_data_size * sizeof(long));
+                tmp_columns_data.long_columns.emplace_back(copied_column_data);
+                tmp_header.data_type_index = tmp_columns_data.long_columns.size() - 1;
+            } else if (_float_vectors.count(column_index)) {
+                std::vector<float>& ref_column_data = _float_vectors[column_index];
+                std::vector<float> copied_column_data(preview_data_size);
+                memcpy(copied_column_data.data(), ref_column_data.data(), preview_data_size * sizeof(float));
+                tmp_columns_data.float_columns.emplace_back(copied_column_data);
+                tmp_header.data_type_index = tmp_columns_data.float_columns.size() - 1;
+            } else if (_double_vectors.count(column_index)) {
+                std::vector<double>& ref_column_data = _double_vectors[column_index];
+                std::vector<double> copied_column_data(preview_data_size);
+                memcpy(copied_column_data.data(), ref_column_data.data(), preview_data_size * sizeof(double));
+                tmp_columns_data.double_columns.emplace_back(copied_column_data);
+                tmp_header.data_type_index = tmp_columns_data.double_columns.size() - 1;
+            }
+
+            // Fill the column header finally
+            open_file_response.headers.push_back(tmp_header);
+        }
+    }
+}
+
+size_t VOTableCarrier::GetTableRowNumber() {
     UpdateNumOfTableRows();
-    file_info_response.data_size = _num_of_rows;
+    return _num_of_rows;
 }
 
 catalog::DataType VOTableCarrier::GetDataType(std::string data_type) {
@@ -182,6 +244,11 @@ catalog::DataType VOTableCarrier::GetDataType(std::string data_type) {
         catalog_data_type = catalog::NONE;
     }
     return catalog_data_type;
+}
+
+bool VOTableCarrier::IsValid() {
+    // Empty column header is identified as a NOT valid VOTable file
+    return (!_fields.empty());
 }
 
 void VOTableCarrier::PrintTableElement(int row, int column) {
