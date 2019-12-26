@@ -1,6 +1,6 @@
 #include "VOTableCarrier.h"
 
-using namespace carta;
+using namespace catalog;
 
 void VOTableCarrier::SetFileName(std::string file_path_name) {
     std::size_t found = file_path_name.find_last_of("/");

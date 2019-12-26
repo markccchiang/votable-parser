@@ -2,7 +2,7 @@
 
 #include "Catalog.h"
 
-using namespace carta;
+using namespace catalog;
 
 void TestOnOpenFileRequest();
 void TestOnOpenFileRequest(catalog::OpenFileRequest open_file_request);

@@ -10,7 +10,7 @@
 
 #include "VOTableCarrier.h"
 
-namespace carta {
+namespace catalog {
 
 class VOTableParser {
     enum ElementName {
@@ -71,6 +71,6 @@ private:
     bool _only_read_to_header;
 };
 
-} // namespace carta
+} // namespace catalog
 
 #endif // CARTA_BACKEND__VOTABLEPARSER_H_

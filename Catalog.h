@@ -6,11 +6,9 @@
 #include <unordered_map>
 #include <vector>
 
-namespace carta {
+namespace catalog {
 
 class VOTableCarrier;
-
-namespace catalog {
 
 // Enums
 
@@ -277,6 +275,5 @@ private:
 };
 
 } // namespace catalog
-} // namespace carta
 
 #endif // CARTA_BACKEND__CATALOG_H_

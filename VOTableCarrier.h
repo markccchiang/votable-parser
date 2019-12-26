@@ -8,9 +8,7 @@
 
 #include "Catalog.h"
 
-using namespace carta;
-
-namespace carta {
+namespace catalog {
 
 class VOTableCarrier {
     // For the element <COOSYS> and its attributes
@@ -98,6 +96,6 @@ private:
     // PS: do not consider the datatypes: "bit", "unsignedByte", "unicodeChar", "floatComplex" and "doubleComplex"
 };
 
-} // namespace carta
+} // namespace catalog
 
 #endif // CARTA_BACKEND__VOTABLECARRIER_H_

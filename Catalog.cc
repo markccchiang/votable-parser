@@ -8,8 +8,7 @@
 #include "VOTableCarrier.h"
 #include "VOTableParser.h"
 
-using namespace carta;
-using namespace carta::catalog;
+using namespace catalog;
 
 Controller::~Controller() {
     for (auto& carrier : _carriers) {
