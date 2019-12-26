@@ -6,7 +6,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "Catalog.h"
+#include "VOTableController.h"
 
 namespace catalog {
 

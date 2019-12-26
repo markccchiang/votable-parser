@@ -1,4 +1,4 @@
-#include "Catalog.h"
+#include "VOTableController.h"
 
 #include <dirent.h>
 #include <stdio.h> /* defines the FILENAME_MAX */

@@ -21,7 +21,7 @@ set(LINK_LIBS ${LINK_LIBS} xml2)
 set(SOURCE_FILES ${SOURCE_FILES}
         VOTableParser.cc
         VOTableCarrier.cc
-        Catalog.cc)
+        VOTableController.cc)
 
 add_executable(votable-tester VOTableTester.cc ${SOURCE_FILES})
 target_link_libraries(votable-tester ${LINK_LIBS})

@@ -1,5 +1,5 @@
-#ifndef CARTA_BACKEND__CATALOG_H_
-#define CARTA_BACKEND__CATALOG_H_
+#ifndef CARTA_BACKEND__VOTABLECONTROLLER_H_
+#define CARTA_BACKEND__VOTABLECONTROLLER_H_
 
 #include <iostream>
 #include <string>
@@ -276,4 +276,4 @@ private:
 
 } // namespace catalog
 
-#endif // CARTA_BACKEND__CATALOG_H_
+#endif // CARTA_BACKEND__VOTABLECONTROLLER_H_
