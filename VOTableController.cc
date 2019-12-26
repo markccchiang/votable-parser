@@ -43,7 +43,7 @@ void Controller::OnFileListRequest(FileListRequest file_list_request, FileListRe
                         // Fill the file info
                         FileInfo tmp_file_info;
                         tmp_file_info.filename = tmp_name;
-                        tmp_file_info.file_type = catalog::VOTable;
+                        tmp_file_info.file_type = VOTable;
                         tmp_file_info.description = tmp_file_description;
                         file_list_response.files.push_back(tmp_file_info);
                     }

@@ -68,10 +68,10 @@ public:
     void FillFieldDescriptions(int count, std::string value);
     void FillTdValues(int column_index, std::string value);
     void UpdateNumOfTableRows();
-    void GetHeaders(catalog::FileInfoResponse& file_info_response);
-    void GetHeadersAndData(catalog::OpenFileResponse& open_file_response, int preview_data_size);
+    void GetHeaders(FileInfoResponse& file_info_response);
+    void GetHeadersAndData(OpenFileResponse& open_file_response, int preview_data_size);
     size_t GetTableRowNumber();
-    static catalog::DataType GetDataType(std::string data_type);
+    static DataType GetDataType(std::string data_type);
     bool IsValid();
 
     void PrintTableElement(int row, int column);
