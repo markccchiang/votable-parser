@@ -23,8 +23,8 @@ set(SOURCE_FILES ${SOURCE_FILES}
         VOTableCarrier.cc
         VOTableController.cc)
 
-add_executable(votable-tester VOTableTester.cc ${SOURCE_FILES})
-target_link_libraries(votable-tester ${LINK_LIBS})
+add_executable(test-votable-parser TestVOTableParser.cc ${SOURCE_FILES})
+target_link_libraries(test-votable-parser ${LINK_LIBS})
 
-add_executable(catalog-tester CatalogTester.cc ${SOURCE_FILES})
-target_link_libraries(catalog-tester ${LINK_LIBS})
+add_executable(test-votable-controller TestVOTableController.cc ${SOURCE_FILES})
+target_link_libraries(test-votable-controller ${LINK_LIBS})
