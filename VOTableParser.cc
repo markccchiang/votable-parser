@@ -1,6 +1,6 @@
 #include "VOTableParser.h"
 
-using namespace carta;
+using namespace catalog;
 
 VOTableParser::VOTableParser(std::string filename, VOTableCarrier* carrier, bool only_read_to_header, bool verbose)
     : _carrier(carrier), _only_read_to_header(only_read_to_header), _verbose(verbose) {

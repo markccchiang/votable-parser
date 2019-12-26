@@ -1,6 +1,6 @@
 #include "VOTableCarrier.h"
 
-using namespace carta;
+using namespace catalog;
 
 void VOTableCarrier::SetFileName(std::string file_path_name) {
     std::size_t found = file_path_name.find_last_of("/");
@@ -145,16 +145,16 @@ void VOTableCarrier::UpdateNumOfTableRows() {
     }
 }
 
-void VOTableCarrier::GetHeaders(catalog::FileInfoResponse& file_info_response) {
+void VOTableCarrier::GetHeaders(FileInfoResponse& file_info_response) {
     for (std::pair<int, Field> field : _fields) {
         Field& tmp_field = field.second;
-        catalog::DataType tmp_data_type = GetDataType(tmp_field.datatype);
-        if (tmp_data_type != catalog::NONE) { // Only fill the header that its data type is in our list
-            catalog::Header tmp_header;
+        DataType tmp_data_type = GetDataType(tmp_field.datatype);
+        if (tmp_data_type != NONE) { // Only fill the header that its data type is in our list
+            Header tmp_header;
             tmp_header.column_name = tmp_field.name;
             tmp_header.data_type = tmp_data_type;
             tmp_header.column_index = field.first; // The FIELD index in the VOTable
-            tmp_header.data_type_index = -1;       // -1 means there is no corresponding data vector in the catalog::ColumnsData
+            tmp_header.data_type_index = -1;       // -1 means there is no corresponding data vector in the ColumnsData
             tmp_header.description = tmp_field.description;
             tmp_header.unit = tmp_field.unit;
             file_info_response.headers.emplace_back(tmp_header);
@@ -162,12 +162,12 @@ void VOTableCarrier::GetHeaders(catalog::FileInfoResponse& file_info_response) {
     }
 }
 
-void VOTableCarrier::GetHeadersAndData(catalog::OpenFileResponse& open_file_response, int preview_data_size) {
+void VOTableCarrier::GetHeadersAndData(OpenFileResponse& open_file_response, int preview_data_size) {
     for (std::pair<int, Field> field : _fields) {
         Field& tmp_field = field.second;
-        catalog::DataType tmp_data_type = GetDataType(tmp_field.datatype);
-        if (tmp_data_type != catalog::NONE) { // Only fill the header that its data type is in our list
-            catalog::Header tmp_header;
+        DataType tmp_data_type = GetDataType(tmp_field.datatype);
+        if (tmp_data_type != NONE) { // Only fill the header that its data type is in our list
+            Header tmp_header;
             tmp_header.column_name = tmp_field.name;
             tmp_header.data_type = tmp_data_type;
             tmp_header.column_index = field.first; // The FIELD index in the VOTable
@@ -176,7 +176,7 @@ void VOTableCarrier::GetHeadersAndData(catalog::OpenFileResponse& open_file_resp
 
             // Fill the column data with respect to its header
             int column_index = field.first;
-            catalog::ColumnsData& tmp_columns_data = open_file_response.columns_data;
+            ColumnsData& tmp_columns_data = open_file_response.columns_data;
             if (_bool_vectors.count(column_index)) {
                 std::vector<bool>& ref_column_data = _bool_vectors[column_index];
                 std::vector<bool> copied_column_data;
@@ -226,22 +226,22 @@ size_t VOTableCarrier::GetTableRowNumber() {
     return _num_of_rows;
 }
 
-catalog::DataType VOTableCarrier::GetDataType(std::string data_type) {
-    catalog::DataType catalog_data_type;
+DataType VOTableCarrier::GetDataType(std::string data_type) {
+    DataType catalog_data_type;
     if (data_type == "boolean") {
-        catalog_data_type = catalog::BOOL;
+        catalog_data_type = BOOL;
     } else if (data_type == "char") {
-        catalog_data_type = catalog::STRING;
+        catalog_data_type = STRING;
     } else if (data_type == "short" || data_type == "int") {
-        catalog_data_type = catalog::INT;
+        catalog_data_type = INT;
     } else if (data_type == "long") {
-        catalog_data_type = catalog::LONG;
+        catalog_data_type = LONG;
     } else if (data_type == "float") {
-        catalog_data_type = catalog::FLOAT;
+        catalog_data_type = FLOAT;
     } else if (data_type == "double") {
-        catalog_data_type = catalog::DOUBLE;
+        catalog_data_type = DOUBLE;
     } else {
-        catalog_data_type = catalog::NONE;
+        catalog_data_type = NONE;
     }
     return catalog_data_type;
 }

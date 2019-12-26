@@ -6,11 +6,9 @@
 #include <unordered_map>
 #include <vector>
 
-#include "Catalog.h"
+#include "VOTableController.h"
 
-using namespace carta;
-
-namespace carta {
+namespace catalog {
 
 class VOTableCarrier {
     // For the element <COOSYS> and its attributes
@@ -70,10 +68,10 @@ public:
     void FillFieldDescriptions(int count, std::string value);
     void FillTdValues(int column_index, std::string value);
     void UpdateNumOfTableRows();
-    void GetHeaders(catalog::FileInfoResponse& file_info_response);
-    void GetHeadersAndData(catalog::OpenFileResponse& open_file_response, int preview_data_size);
+    void GetHeaders(FileInfoResponse& file_info_response);
+    void GetHeadersAndData(OpenFileResponse& open_file_response, int preview_data_size);
     size_t GetTableRowNumber();
-    static catalog::DataType GetDataType(std::string data_type);
+    static DataType GetDataType(std::string data_type);
     bool IsValid();
 
     void PrintTableElement(int row, int column);
@@ -98,6 +96,6 @@ private:
     // PS: do not consider the datatypes: "bit", "unsignedByte", "unicodeChar", "floatComplex" and "doubleComplex"
 };
 
-} // namespace carta
+} // namespace catalog
 
 #endif // CARTA_BACKEND__VOTABLECARRIER_H_

@@ -3,7 +3,7 @@
 #include "VOTableCarrier.h"
 #include "VOTableParser.h"
 
-using namespace carta;
+using namespace catalog;
 
 void TestScanAllVOTable1(std::string filename);
 void TestScanAllVOTable2(std::string filename);

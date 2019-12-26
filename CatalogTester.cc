@@ -1,15 +1,15 @@
 #include <iostream>
 
-#include "Catalog.h"
+#include "VOTableController.h"
 
-using namespace carta;
+using namespace catalog;
 
 void TestOnOpenFileRequest();
-void TestOnOpenFileRequest(catalog::OpenFileRequest open_file_request);
+void TestOnOpenFileRequest(OpenFileRequest open_file_request);
 void TestOnFileListRequest();
-void TestOnFileListRequest(catalog::FileListRequest file_list_request);
+void TestOnFileListRequest(FileListRequest file_list_request);
 void TestOnFileInfoRequest();
-void TestOnFileInfoRequest(catalog::FileInfoRequest file_info_request);
+void TestOnFileInfoRequest(FileInfoRequest file_info_request);
 
 int main(int argc, char* argv[]) {
     // TestOnFileListRequest();
@@ -26,9 +26,9 @@ void TestOnFileListRequest() {
     TestOnFileListRequest({"no_such_dir"});
 }
 
-void TestOnFileListRequest(catalog::FileListRequest file_list_request) {
-    catalog::FileListResponse file_list_response;
-    catalog::Controller::OnFileListRequest(file_list_request, file_list_response);
+void TestOnFileListRequest(FileListRequest file_list_request) {
+    FileListResponse file_list_response;
+    Controller::OnFileListRequest(file_list_request, file_list_response);
     file_list_request.Print();
     file_list_response.Print();
 }
@@ -40,9 +40,9 @@ void TestOnFileInfoRequest() {
     TestOnFileInfoRequest({"$BASE/images", "M17_SWex_simbad_2arcmin.xml"});
 }
 
-void TestOnFileInfoRequest(catalog::FileInfoRequest file_info_request) {
-    catalog::FileInfoResponse file_info_response;
-    catalog::Controller::OnFileInfoRequest(file_info_request, file_info_response);
+void TestOnFileInfoRequest(FileInfoRequest file_info_request) {
+    FileInfoResponse file_info_response;
+    Controller::OnFileInfoRequest(file_info_request, file_info_response);
 
     file_info_request.Print();
     file_info_response.Print();
@@ -55,15 +55,15 @@ void TestOnOpenFileRequest() {
     TestOnOpenFileRequest({"$BASE/images", "M17_SWex_simbad_2arcmin.xml", 0, 0});
 }
 
-void TestOnOpenFileRequest(catalog::OpenFileRequest open_file_request) {
-    catalog::OpenFileResponse open_file_response;
-    catalog::Controller controller = catalog::Controller();
+void TestOnOpenFileRequest(OpenFileRequest open_file_request) {
+    OpenFileResponse open_file_response;
+    Controller controller = Controller();
     controller.OnOpenFileRequest(open_file_request, open_file_response);
 
     open_file_request.Print();
     open_file_response.Print();
 
-    catalog::CloseFileRequest close_file_request;
+    CloseFileRequest close_file_request;
     close_file_request.file_id = open_file_request.file_id;
     controller.OnCloseFileRequest(close_file_request);
 }
