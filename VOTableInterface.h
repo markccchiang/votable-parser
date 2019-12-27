@@ -116,6 +116,15 @@ struct FilterConfig {
     float max;
     std::string sub_string;
     DataType data_type;
+    void Print() {
+        std::cout << "FilterConfig:" << std::endl;
+        std::cout << "    column_name = " << column_name << std::endl;
+        std::cout << "    comparison_operator = " << comparison_operator << std::endl;
+        std::cout << "    min = " << min << std::endl;
+        std::cout << "    max = " << max << std::endl;
+        std::cout << "    sub_string = " << sub_string << std::endl;
+        std::cout << "    data_type = " << data_type << std::endl;
+    }
 };
 
 struct ImageBounds {
@@ -123,6 +132,13 @@ struct ImageBounds {
     int x_max;
     int y_min;
     int y_max;
+    void Print() {
+        std::cout << "ImageBounds:" << std::endl;
+        std::cout << "    x_min = " << x_min << std::endl;
+        std::cout << "    x_max = " << x_max << std::endl;
+        std::cout << "    y_min = " << y_min << std::endl;
+        std::cout << "    y_max = " << y_max << std::endl;
+    }
 };
 
 // Structs for request messages
@@ -164,12 +180,28 @@ struct CloseFileRequest {
 };
 
 struct FilterRequest {
+    int file_id;
     std::vector<std::string> hided_table_headers;
     std::vector<FilterConfig> filter_configs;
     int subset_data_size;
     int subset_start_index;
     ImageBounds image_bounds;
     int region_id;
+    void Print() {
+        std::cout << "FilterRequest:" << std::endl;
+        std::cout << "    file_id = " << file_id << std::endl;
+        for (int i = 0; i < hided_table_headers.size(); ++i) {
+            std::cout << "    hided_table_headers[" << i << "] = " << hided_table_headers[i] << std::endl;
+        }
+        for (int i = 0; i < filter_configs.size(); ++i) {
+            std::cout << "    filter_configs[" << i << "]:" << std::endl;
+            filter_configs[i].Print();
+        }
+        std::cout << "    subset_data_size = " << subset_data_size << std::endl;
+        std::cout << "    subset_start_index = " << subset_start_index << std::endl;
+        image_bounds.Print();
+        std::cout << "    region_id = " << region_id << std::endl;
+    }
 };
 
 // Structs for response messages
@@ -245,6 +277,17 @@ struct FilterResponse {
     std::vector<Header> headers;
     ColumnsData columns_data;
     float progress;
+    void Print() {
+        std::cout << "FilterResponse:" << std::endl;
+        std::cout << "    file_id = " << file_id << std::endl;
+        std::cout << "    region_id = " << region_id << std::endl;
+        for (int i = 0; i < headers.size(); ++i) {
+            std::cout << "Header[" << i << "]:" << std::endl;
+            headers[i].Print();
+        }
+        columns_data.Print();
+        std::cout << "    progress = " << progress << std::endl;
+    }
 };
 
 } // namespace catalog
