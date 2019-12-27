@@ -132,6 +132,15 @@ struct ImageBounds {
     int x_max;
     int y_min;
     int y_max;
+    ImageBounds& operator=(const ImageBounds& other) {
+        if (this != &other) {
+            x_min = other.x_min;
+            x_max = other.x_max;
+            y_min = other.y_min;
+            y_max = other.y_max;
+        }
+        return *this;
+    }
     void Print() {
         std::cout << "ImageBounds:" << std::endl;
         std::cout << "    x_min = " << x_min << std::endl;
