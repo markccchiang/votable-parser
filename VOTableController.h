@@ -23,6 +23,7 @@ public:
     static void OnFileInfoRequest(FileInfoRequest file_info_request, FileInfoResponse& file_info_response);
     void OnOpenFileRequest(OpenFileRequest open_file_request, OpenFileResponse& open_file_response);
     void OnCloseFileRequest(CloseFileRequest close_file_request);
+    void OnFilterRequest(FilterRequest filter_request, std::function<void(FilterResponse)> partial_results_callback);
 
 private:
     static std::string GetCurrentWorkingPath();

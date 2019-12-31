@@ -70,6 +70,7 @@ public:
     void UpdateNumOfTableRows();
     void GetHeaders(FileInfoResponse& file_info_response);
     void GetHeadersAndData(OpenFileResponse& open_file_response, int preview_data_size);
+    void GetFilteredData(FilterRequest filter_request, std::function<void(FilterResponse)> partial_results_callback);
     size_t GetTableRowNumber();
     static DataType GetDataType(std::string data_type);
     bool IsValid();
@@ -78,10 +79,15 @@ public:
     void PrintData();
 
 private:
+    bool BoolFilter(FilterConfig filter, bool value);
+    bool StringFilter(FilterConfig filter, std::string value);
+    template <typename T>
+    bool NumericFilter(FilterConfig filter, T value);
+
     std::string _filename;
     std::string _directory;
     std::string _votable_version = "";       // VOTable version, "" means this is not the VOTable XML file.
-    std::unordered_map<int, Coosys> _coosys; // Unordered map for the element <COOSYS>: <COOSYS count, COOSYS attributes>
+    std::unordered_map<int, Coosys> _coosys; // Unordered map for the element <COOSYS>: <COOSYS count (Column Index), COOSYS attributes>
     std::unordered_map<int, Field> _fields;  // Unordered map for the element <FIELD>: <FIELD count, FIELD attributes>
     size_t _num_of_rows = 0;                 // Number of table rows
 

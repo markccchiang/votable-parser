@@ -153,6 +153,15 @@ void Controller::OnCloseFileRequest(CloseFileRequest close_file_request) {
     CloseFile(file_id);
 }
 
+void Controller::OnFilterRequest(FilterRequest filter_request, std::function<void(FilterResponse)> partial_results_callback) {
+    int file_id(filter_request.file_id);
+    if (!_carriers.count(file_id)) {
+        std::cerr << "VOTable file does not exist (file ID: " << file_id << "!" << std::endl;
+        return;
+    }
+    _carriers[file_id]->GetFilteredData(filter_request, [&](FilterResponse filter_response) { partial_results_callback(filter_response); });
+}
+
 std::string Controller::GetCurrentWorkingPath() {
     char buff[FILENAME_MAX];
     getcwd(buff, FILENAME_MAX);
