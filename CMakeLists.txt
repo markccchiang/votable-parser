@@ -9,14 +9,13 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 # Needed by clang-tidy and other clang tools
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-FIND_PACKAGE(libxml2 REQUIRED)
+find_package(LibXml2 REQUIRED)
 
-#INCLUDE_DIRECTORIES(/usr/local/include)
-#LINK_DIRECTORIES(/usr/local/lib)
-INCLUDE_DIRECTORIES(/usr/local/opt/libxml2/include/libxml2)
-#LINK_DIRECTORIES(/usr/local/opt/libxml2/lib)
+message(STATUS LIBXML2_FOUND = ${LIBXML2_FOUND})
 
-set(LINK_LIBS ${LINK_LIBS} xml2)
+include_directories(${LIBXML2_INCLUDE_DIR})
+
+set(LINK_LIBS ${LINK_LIBS} ${LIBXML2_LIBRARIES})
 
 set(SOURCE_FILES ${SOURCE_FILES}
         VOTableParser.cc
