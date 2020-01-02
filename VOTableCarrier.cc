@@ -274,9 +274,6 @@ void VOTableCarrier::GetFilteredData(FilterRequest filter_request, std::function
                 tmp_header.description = tmp_field.description;
                 tmp_header.unit = tmp_field.unit;
 
-                // Fill the column header
-                filter_response.headers.push_back(tmp_header);
-
                 // Assign the column data type index and column size
                 if (_bool_vectors.count(column_index)) {
                     column_to_data_type_index[column_index] = bool_vector_index;
@@ -303,6 +300,12 @@ void VOTableCarrier::GetFilteredData(FilterRequest filter_request, std::function
                     ++double_vector_index;
                     tmp_columns_data.double_columns.resize(double_vector_index);
                 }
+
+                // Fill the data type index
+                tmp_header.data_type_index = column_to_data_type_index[column_index];
+
+                // Fill the column header finally
+                filter_response.headers.push_back(tmp_header);
             }
         }
     }

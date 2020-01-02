@@ -7,6 +7,7 @@ using namespace catalog;
 void TestOnFilterRequest1();
 void TestOnFilterRequest2();
 void TestOnFilterRequest3();
+void TestOnFilterRequest4();
 void TestOnFilterRequest(OpenFileRequest open_file_request, FilterRequest filter_request);
 void TestOnOpenFileRequest();
 void TestOnOpenFileRequest(OpenFileRequest open_file_request);
@@ -21,7 +22,8 @@ int main(int argc, char* argv[]) {
     // TestOnOpenFileRequest();
     // TestOnFilterRequest1();
     // TestOnFilterRequest2();
-    TestOnFilterRequest3();
+    // TestOnFilterRequest3();
+    TestOnFilterRequest4();
 
     return 0;
 }
@@ -90,10 +92,7 @@ void TestOnFilterRequest1() {
     filter_request.subset_start_index = 0;
     filter_request.subset_data_size = 50;
     filter_request.region_id = 0;
-    filter_request.image_bounds.x_min = -1;
-    filter_request.image_bounds.x_max = -1;
-    filter_request.image_bounds.y_min = -1;
-    filter_request.image_bounds.y_max = -1;
+    filter_request.image_bounds = {-1, -1, -1, -1};
 
     TestOnFilterRequest(open_file_request, filter_request);
 }
@@ -110,10 +109,7 @@ void TestOnFilterRequest2() {
     filter_request.subset_start_index = 0;
     filter_request.subset_data_size = 50;
     filter_request.region_id = 0;
-    filter_request.image_bounds.x_min = -1;
-    filter_request.image_bounds.x_max = -1;
-    filter_request.image_bounds.y_min = -1;
-    filter_request.image_bounds.y_max = -1;
+    filter_request.image_bounds = {-1, -1, -1, -1};
 
     TestOnFilterRequest(open_file_request, filter_request);
 }
@@ -130,20 +126,40 @@ void TestOnFilterRequest3() {
     filter_request.subset_start_index = 0;
     filter_request.subset_data_size = 50;
     filter_request.region_id = 0;
-    filter_request.image_bounds.x_min = -1;
-    filter_request.image_bounds.x_max = -1;
-    filter_request.image_bounds.y_min = -1;
-    filter_request.image_bounds.y_max = -1;
-    filter_request.hided_table_headers.push_back("Name");
-    filter_request.hided_table_headers.push_back("RVel");
-    filter_request.hided_table_headers.push_back("e_RVel");
-    filter_request.hided_table_headers.push_back("R");
+    filter_request.image_bounds = {-1, -1, -1, -1};
+    filter_request.hided_table_headers = {"Name", "RVel", "e_RVel", "R"};
 
     FilterConfig filter_config1;
     filter_config1.column_name = "RA";
     filter_config1.comparison_operator = FromTo;
     filter_config1.min = 0;
     filter_config1.max = 100;
+    filter_request.filter_configs.push_back(filter_config1);
+
+    TestOnFilterRequest(open_file_request, filter_request);
+}
+
+void TestOnFilterRequest4() {
+    OpenFileRequest open_file_request;
+    open_file_request.directory = "images";
+    open_file_request.filename = "M17_SWex_simbad_2arcmin.xml";
+    open_file_request.file_id = 0;
+    open_file_request.preview_data_size = 0;
+
+    FilterRequest filter_request;
+    filter_request.file_id = 0;
+    filter_request.subset_start_index = 0;
+    filter_request.subset_data_size = 10;
+    filter_request.region_id = 0;
+    filter_request.image_bounds = {-1, -1, -1, -1};
+    filter_request.hided_table_headers = {"OID4", "XMM:Obsno", "IUE:bibcode", "IUE:F", "IUE:Comments", "IUE:S", "IUE:CEB", "IUE:m",
+        "IUE:ExpTim", "IUE:Time", "IUE:ObsDate", "IUE:MD", "IUE:FES", "IUE:A", "IUE:IMAGE"};
+
+    FilterConfig filter_config1;
+    filter_config1.column_name = "RA_d";
+    filter_config1.comparison_operator = GreaterThan;
+    filter_config1.min = 275.089;
+    filter_config1.max = 275.089;
     filter_request.filter_configs.push_back(filter_config1);
 
     TestOnFilterRequest(open_file_request, filter_request);
