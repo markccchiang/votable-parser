@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "VOTableCarrier.h"
-#include "VOTableParser.h"
+#include "../VOTableCarrier.h"
+#include "../VOTableParser.h"
 
 using namespace catalog;
 

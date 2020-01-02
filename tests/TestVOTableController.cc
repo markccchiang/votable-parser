@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "VOTableController.h"
+#include "../VOTableController.h"
 
 using namespace catalog;
 
