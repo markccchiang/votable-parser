@@ -216,6 +216,16 @@ void TestOnFilterRequest2(OpenFileRequest open_file_request, FilterRequest filte
 }
 
 void TestMultiFiles() {
+    // File list request
+    TestOnFileListRequest({"$BASE/images"});
+    std::cout << "\n------------------------------------------------------------------\n";
+
+    // File info request
+    TestOnFileInfoRequest({"$BASE/images", "simple.xml"});
+    std::cout << "\n------------------------------------------------------------------\n";
+    TestOnFileInfoRequest({"$BASE/images", "M17_SWex_simbad_2arcmin.xml"});
+    std::cout << "\n------------------------------------------------------------------\n";
+
     // First file messages
     OpenFileRequest open_file_request1;
     open_file_request1.directory = "images";
@@ -236,6 +246,7 @@ void TestMultiFiles() {
     filter_config1.comparison_operator = FromTo;
     filter_config1.min = 0;
     filter_config1.max = 100;
+    filter_config1.data_type = FLOAT; // This variable is not used in the filter function
     filter_request1.filter_configs.push_back(filter_config1);
 
     // Second file messages
@@ -259,6 +270,7 @@ void TestMultiFiles() {
     filter_config2.comparison_operator = GreaterThan;
     filter_config2.min = 275.089;
     filter_config2.max = 275.089;
+    filter_config2.data_type = DOUBLE; // This variable is not used in the filter function
     filter_request2.filter_configs.push_back(filter_config2);
 
     // Create the Controller
