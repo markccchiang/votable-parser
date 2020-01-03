@@ -13,6 +13,7 @@ using namespace catalog;
 Controller::~Controller() {
     for (auto& carrier : _carriers) {
         delete carrier.second;
+        carrier.second = nullptr;
     }
     _carriers.clear();
 }
