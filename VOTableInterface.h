@@ -60,7 +60,7 @@ struct ColumnsData {
     std::vector<std::vector<bool>> bool_columns;
     std::vector<std::vector<std::string>> string_columns;
     std::vector<std::vector<int>> int_columns;
-    std::vector<std::vector<long>> long_columns;
+    std::vector<std::vector<long long>> long_columns;
     std::vector<std::vector<float>> float_columns;
     std::vector<std::vector<double>> double_columns;
     void Print() {

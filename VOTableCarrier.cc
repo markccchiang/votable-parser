@@ -80,7 +80,7 @@ void VOTableCarrier::FillTdValues(int column_index, std::string value) {
         }
     } else if (_fields[column_index].datatype == "long") {
         try {
-            _long_vectors[column_index].push_back(std::stol(value));
+            _long_vectors[column_index].push_back(std::stoll(value));
         } catch (...) {
             _long_vectors[column_index].push_back(std::numeric_limits<long>::quiet_NaN());
         }
@@ -198,9 +198,9 @@ void VOTableCarrier::GetHeadersAndData(OpenFileResponse& open_file_response, int
                 tmp_columns_data.int_columns.emplace_back(copied_column_data);
                 tmp_header.data_type_index = tmp_columns_data.int_columns.size() - 1;
             } else if (_long_vectors.count(column_index)) {
-                std::vector<long>& ref_column_data = _long_vectors[column_index];
-                std::vector<long> copied_column_data(preview_data_size);
-                memcpy(copied_column_data.data(), ref_column_data.data(), preview_data_size * sizeof(long));
+                std::vector<long long>& ref_column_data = _long_vectors[column_index];
+                std::vector<long long> copied_column_data(preview_data_size);
+                memcpy(copied_column_data.data(), ref_column_data.data(), preview_data_size * sizeof(long long));
                 tmp_columns_data.long_columns.emplace_back(copied_column_data);
                 tmp_header.data_type_index = tmp_columns_data.long_columns.size() - 1;
             } else if (_float_vectors.count(column_index)) {
@@ -408,7 +408,7 @@ void VOTableCarrier::GetFilteredData(FilterRequest filter_request, std::function
                 tmp_columns_data.int_columns[data_type_index].push_back(int_vector.second[row]);
             }
         }
-        for (std::pair<int, std::vector<long>> long_vector : _long_vectors) {
+        for (std::pair<int, std::vector<long long>> long_vector : _long_vectors) {
             int column_index = long_vector.first;
             if (hided_column_indices.find(column_index) == hided_column_indices.end()) {
                 int data_type_index = column_to_data_type_index[column_index];
