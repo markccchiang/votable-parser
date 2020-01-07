@@ -151,7 +151,7 @@ void VOTableCarrier::GetHeaders(FileInfoResponse& file_info_response) {
     for (std::pair<int, Field> field : _fields) {
         Field& tmp_field = field.second;
         DataType tmp_data_type = GetDataType(tmp_field.datatype);
-        if (tmp_data_type != NONE) { // Only fill the header that its data type is in our list
+        if (tmp_data_type != UNKNOWN_TYPE) { // Only fill the header that its data type is in our list
             Header tmp_header;
             tmp_header.column_name = tmp_field.name;
             tmp_header.data_type = tmp_data_type;
@@ -168,7 +168,7 @@ void VOTableCarrier::GetHeadersAndData(OpenFileResponse& open_file_response, int
     for (std::pair<int, Field> field : _fields) {
         Field& tmp_field = field.second;
         DataType tmp_data_type = GetDataType(tmp_field.datatype);
-        if (tmp_data_type != NONE) { // Only fill the header that its data type is in our list
+        if (tmp_data_type != UNKNOWN_TYPE) { // Only fill the header that its data type is in our list
             Header tmp_header;
             tmp_header.column_name = tmp_field.name;
             tmp_header.data_type = tmp_data_type;
@@ -263,7 +263,7 @@ void VOTableCarrier::GetFilteredData(FilterRequest filter_request, std::function
         DataType tmp_data_type = GetDataType(tmp_field.datatype);
 
         // Only fill the header that its data type is in our list
-        if (tmp_data_type != NONE) {
+        if (tmp_data_type != UNKNOWN_TYPE) {
             // Only fill the header that its column index is not in the hided column set
             int column_index = field.first;
             if (hided_column_indices.find(column_index) == hided_column_indices.end()) {
@@ -463,7 +463,7 @@ DataType VOTableCarrier::GetDataType(std::string data_type) {
     } else if (data_type == "double") {
         catalog_data_type = DOUBLE;
     } else {
-        catalog_data_type = NONE;
+        catalog_data_type = UNKNOWN_TYPE;
     }
     return catalog_data_type;
 }

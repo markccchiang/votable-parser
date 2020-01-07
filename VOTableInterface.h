@@ -22,7 +22,7 @@ enum ComparisonOperator {
     FromTo = 7
 };
 
-enum DataType { BOOL = 0, STRING = 1, INT = 2, LONG = 3, FLOAT = 4, DOUBLE = 5, NONE = 6 };
+enum DataType { BOOL = 0, STRING = 1, INT = 2, LONG = 3, FLOAT = 4, DOUBLE = 5, UNKNOWN_TYPE = 6 };
 
 // Structs for sub-message
 
