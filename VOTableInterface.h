@@ -115,7 +115,6 @@ struct FilterConfig {
     float min;
     float max;
     std::string sub_string;
-    DataType data_type;
     void Print() {
         std::cout << "FilterConfig:" << std::endl;
         std::cout << "    column_name = " << column_name << std::endl;
@@ -123,7 +122,6 @@ struct FilterConfig {
         std::cout << "    min = " << min << std::endl;
         std::cout << "    max = " << max << std::endl;
         std::cout << "    sub_string = " << sub_string << std::endl;
-        std::cout << "    data_type = " << data_type << std::endl;
     }
 };
 
