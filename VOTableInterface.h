@@ -22,7 +22,7 @@ enum ComparisonOperator {
     FromTo = 7
 };
 
-enum DataType { BOOL = 0, STRING = 1, INT = 2, LONG = 3, FLOAT = 4, DOUBLE = 5, UNKNOWN_TYPE = 6 };
+enum DataType { BOOL = 0, STRING = 1, INT = 2, LONGLONG = 3, FLOAT = 4, DOUBLE = 5, UNKNOWN_TYPE = 6 };
 
 // Structs for sub-message
 
@@ -60,7 +60,7 @@ struct ColumnsData {
     std::vector<std::vector<bool>> bool_columns;
     std::vector<std::vector<std::string>> string_columns;
     std::vector<std::vector<int>> int_columns;
-    std::vector<std::vector<long long>> long_columns;
+    std::vector<std::vector<long long>> ll_columns;
     std::vector<std::vector<float>> float_columns;
     std::vector<std::vector<double>> double_columns;
     void Print() {
@@ -85,10 +85,10 @@ struct ColumnsData {
             }
             std::cout << std::endl;
         }
-        for (int i = 0; i < long_columns.size(); ++i) {
-            std::cout << "long_columns[" << i << "]:" << std::endl;
-            for (int j = 0; j < long_columns[i].size(); ++j) {
-                std::cout << long_columns[i][j] << " | ";
+        for (int i = 0; i < ll_columns.size(); ++i) {
+            std::cout << "ll_columns[" << i << "]:" << std::endl;
+            for (int j = 0; j < ll_columns[i].size(); ++j) {
+                std::cout << ll_columns[i][j] << " | ";
             }
             std::cout << std::endl;
         }
