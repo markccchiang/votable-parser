@@ -39,6 +39,7 @@ void TestOnFileListRequest() {
     TestOnFileListRequest({"images"});
     TestOnFileListRequest({"$BASE/no_such_dir"});
     TestOnFileListRequest({"no_such_dir"});
+    TestOnFileListRequest({"symlink"});
 }
 
 void TestOnFileListRequest(FileListRequest file_list_request) {
