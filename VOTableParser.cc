@@ -56,7 +56,7 @@ void VOTableParser::Scan() {
     int result;
     do {
         result = xmlTextReaderRead(_reader);
-        if (result && _continue_read) {
+        if (result == 1 && _continue_read) {
             Parse(); // Parse the VOTable and store data in the VOTableCarrier
         } else {
             if (_verbose) {
